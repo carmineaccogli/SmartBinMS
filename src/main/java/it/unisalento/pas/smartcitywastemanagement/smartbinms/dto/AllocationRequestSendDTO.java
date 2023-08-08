@@ -15,7 +15,7 @@ public class AllocationRequestSendDTO {
     private String smartBin_name;
 
     @NotNull
-    @ValidGeoJSONPoint
+    @ValidGeoJSONPoint(message = "The point is outside the municipality boundaries")
     private GeoJsonPoint position;
 
     @NotNull

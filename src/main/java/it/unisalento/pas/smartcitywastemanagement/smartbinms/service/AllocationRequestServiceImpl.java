@@ -127,7 +127,7 @@ public class AllocationRequestServiceImpl implements AllocationRequestService{
         smartBin.setState(SmartBin.State.ALLOCATED);
         smartBin.setName(allocationRequest.getSmartBin_name());
         smartBin.setPosition(allocationRequest.getPosition());
-        smartBin.setCurrentCapacity(null);
+        smartBin.setCurrentCapacity(0.0f);
         smartBin.setType(allocationRequest.getType());
         smartBin.setTotalCapacity(allocationRequest.getTotalCapacity());
         return smartBin;

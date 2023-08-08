@@ -2,6 +2,7 @@ package it.unisalento.pas.smartcitywastemanagement.smartbinms.exceptions;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.ExceptionDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -94,6 +95,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                         "Request state is invalid"
                 ));
     }
+
 
 
 
