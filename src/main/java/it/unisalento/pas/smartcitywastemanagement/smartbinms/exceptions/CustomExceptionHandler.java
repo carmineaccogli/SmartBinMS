@@ -96,6 +96,17 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(InvalidPositionException.class)
+    public ResponseEntity<Object> handleAnotherException(InvalidPositionException ex) {
+        // Creare un oggetto di risposta personalizzato per un'altra eccezione specifica
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ExceptionDTO(
+                        13,
+                        InvalidPositionException.class.getSimpleName(),
+                        "The position indicated is outside the municipality boundaries"
+                ));
+    }
+
 
 
 
