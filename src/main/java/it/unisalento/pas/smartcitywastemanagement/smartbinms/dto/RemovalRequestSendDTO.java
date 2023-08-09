@@ -1,7 +1,10 @@
 package it.unisalento.pas.smartcitywastemanagement.smartbinms.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class RemovalRequestSendDTO {
 
+    @NotBlank
     private String smartBin_id;
 
 

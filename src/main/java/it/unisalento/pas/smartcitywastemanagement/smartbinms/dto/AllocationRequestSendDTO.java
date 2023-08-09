@@ -11,7 +11,7 @@ import java.util.Date;
 public class AllocationRequestSendDTO {
 
 
-    @NotNull
+    @NotBlank
     private String smartBin_name;
 
     @NotNull
@@ -22,7 +22,7 @@ public class AllocationRequestSendDTO {
     @Min(value=1)
     private Float totalCapacity;
 
-    @NotNull
+    @NotBlank
     private String type;
 
 
