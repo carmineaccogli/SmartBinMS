@@ -1,6 +1,7 @@
 package it.unisalento.pas.smartcitywastemanagement.smartbinms.validators;
 
 
+import it.unisalento.pas.smartcitywastemanagement.smartbinms.exceptions.InvalidPositionException;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.utility.MunicipalityBoundaryUtils;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -34,6 +35,7 @@ public class ValidGeoJSONPointValidator implements ConstraintValidator<ValidGeoJ
         Polygon municipalityPolygon = loadPolygon();
         Point point = convertToJTSPoint(value);
         return municipalityPolygon.contains(point);
+
     }
 
     private Polygon loadPolygon() {

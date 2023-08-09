@@ -61,6 +61,7 @@ public class RemovalRequestServiceImpl implements RemovalRequestService {
 
         // Richiesta APPROVATA
         removalRequest.setStatus(RemovalRequest.Status.APPROVED);
+        removalRequestRepository.save(removalRequest);
 
         Optional<SmartBin> smartBin = smartBinRepository.findById(removalRequest.getSmartBin_id());
         if (!smartBin.isPresent())

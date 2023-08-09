@@ -9,15 +9,13 @@ import it.unisalento.pas.smartcitywastemanagement.smartbinms.mappers.AllocationR
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.mappers.RemovalRequestMapper;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.service.AllocationRequestService;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.service.RemovalRequestService;
-import it.unisalento.pas.smartcitywastemanagement.smartbinms.utility.MunicipalityBoundaryUtils;
 import jakarta.validation.Valid;
-import org.locationtech.jts.geom.Polygon;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -48,13 +46,16 @@ public class RequestRestController {
      ----- */
 
     @RequestMapping(value="/allocation", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDTO> sendAllocationRequest(@RequestBody @Valid AllocationRequestSendDTO allocationRequestSendDTO) throws SmartBinAlreadyAllocatedException, SmartBinTypeNotFoundException {
+    public ResponseEntity<ResponseDTO> sendAllocationRequest(@RequestBody @Valid AllocationRequestSendDTO allocationRequestSendDTO, BindingResult bindingResult) throws SmartBinAlreadyAllocatedException, SmartBinTypeNotFoundException, InvalidPositionException {
 
         // Conversione DTO->Domain
         AllocationRequest allocationRequest = allocationRequestMapper.toAllocationRequest(allocationRequestSendDTO);
 
         // Validazione e salvataggio della richiesta
         String createdId = allocationRequestService.saveAllocationRequest(allocationRequest);
+
+        if (getSavePositionError(bindingResult))
+            throw new InvalidPositionException();
 
         return new ResponseEntity<>(
                 new ResponseDTO("Allocation Request created successfully", createdId),
@@ -224,6 +225,19 @@ public class RequestRestController {
             result.add(removalRequestViewDTO);
         }
         return result;
+    }
+
+    private boolean getSavePositionError(BindingResult errors) {
+        if (errors.hasErrors()) {
+            for (FieldError error : errors.getFieldErrors()) {
+                String fieldName = error.getField();
+
+                if ("position".equals(fieldName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }
