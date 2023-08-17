@@ -51,11 +51,12 @@ public class RequestRestController {
         // Conversione DTO->Domain
         AllocationRequest allocationRequest = allocationRequestMapper.toAllocationRequest(allocationRequestSendDTO);
 
+        if (getSavePositionError(bindingResult))
+            throw new InvalidPositionException();
+
         // Validazione e salvataggio della richiesta
         String createdId = allocationRequestService.saveAllocationRequest(allocationRequest);
 
-        if (getSavePositionError(bindingResult))
-            throw new InvalidPositionException();
 
         return new ResponseEntity<>(
                 new ResponseDTO("Allocation Request created successfully", createdId),
