@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  *      - descrizione eccezione
  */
 @ControllerAdvice
-public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+public class CustomExceptionHandler  {
 
     @ExceptionHandler(AllocationRequestNotFound.class)
     public ResponseEntity<Object> handleSpecificException(AllocationRequestNotFound ex) {
@@ -104,6 +104,23 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                         13,
                         InvalidPositionException.class.getSimpleName(),
                         "The position indicated is outside the municipality boundaries"
+                ));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex) {
+
+        StringBuilder errorString = new StringBuilder();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String errorMessage = error.getDefaultMessage();
+            errorString.append(errorMessage).append(".");
+        });
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ExceptionDTO(
+                        14,
+                        MethodArgumentNotValidException.class.getSimpleName(),
+                        errorString.deleteCharAt(errorString.length() - 1).toString()
                 ));
     }
 
