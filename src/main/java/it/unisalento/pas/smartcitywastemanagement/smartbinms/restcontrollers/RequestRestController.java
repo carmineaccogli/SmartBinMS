@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/smartbin/request")
 public class RequestRestController {
 

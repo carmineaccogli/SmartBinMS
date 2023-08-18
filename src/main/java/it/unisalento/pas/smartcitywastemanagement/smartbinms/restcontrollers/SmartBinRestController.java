@@ -17,6 +17,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/smartbin")
 public class SmartBinRestController {
 
