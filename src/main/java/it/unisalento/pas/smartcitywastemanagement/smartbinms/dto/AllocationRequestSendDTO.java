@@ -1,5 +1,6 @@
 package it.unisalento.pas.smartcitywastemanagement.smartbinms.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.validators.ValidGeoJSONPoint;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

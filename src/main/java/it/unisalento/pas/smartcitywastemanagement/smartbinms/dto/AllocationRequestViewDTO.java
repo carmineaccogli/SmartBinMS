@@ -1,5 +1,6 @@
 package it.unisalento.pas.smartcitywastemanagement.smartbinms.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -28,6 +29,7 @@ public class AllocationRequestViewDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date decisionDate;
 
+    @JsonFormat(pattern = "#.##")
     private Float totalCapacity;
 
     private String type;

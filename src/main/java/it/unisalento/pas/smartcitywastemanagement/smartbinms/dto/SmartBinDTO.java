@@ -1,5 +1,6 @@
 package it.unisalento.pas.smartcitywastemanagement.smartbinms.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.utility.GeoJsonDeserializer;
@@ -16,8 +17,11 @@ public class SmartBinDTO {
     private GeoJsonPoint position;
     private String state;
     private String type;
+
+    @JsonFormat(pattern = "#.##")
     private Float totalCapacity;
 
+    @JsonFormat(pattern = "#.##")
     private Float currentCapacity;
 
 
