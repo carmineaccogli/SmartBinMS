@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class RemovalRequestSendDTO {
 
-    @NotBlank
+    @NotBlank(message = "{NotBlank.RemovalRequest.smartBin_id}")
     private String smartBin_id;
 
 

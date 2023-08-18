@@ -12,18 +12,18 @@ import java.util.Date;
 public class AllocationRequestSendDTO {
 
 
-    @NotBlank
+    @NotBlank(message = "{NotBlank.AllocationRequest.smartBin_name}")
     private String smartBin_name;
 
-    @NotNull
-    @ValidGeoJSONPoint(message = "The point is outside the municipality boundaries")
+    @NotNull(message = "{NotNull.AllocationRequest.position}")
+    @ValidGeoJSONPoint
     private GeoJsonPoint position;
 
-    @NotNull
-    @Min(value=1)
+    @NotNull(message = "{NotNull.AllocationRequest.totalCapacity}")
+    @Min(value=1, message = "{Min.AllocationRequest.totalCapacity}")
     private Float totalCapacity;
 
-    @NotBlank
+    @NotBlank(message = "{NotBlank.AllocationRequest.type}")
     private String type;
 
 

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 
 public class TypeDTO {
 
-    @NotNull
+    @NotNull(message = "{NotBlank.Type.name}")
     private String name;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
