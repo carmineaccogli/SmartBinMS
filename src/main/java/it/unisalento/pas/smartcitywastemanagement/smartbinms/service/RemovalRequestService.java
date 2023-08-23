@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface RemovalRequestService {
 
-    String saveRemovalRequest(RemovalRequest removalRequest) throws SmartBinNotFoundException;
+    String saveRemovalRequest(RemovalRequest removalRequest) throws SmartBinNotFoundException, RequestAlreadyExistsException;
 
-    void manageRemovalRequest(String requestID, String result) throws RemovalRequestNotFound, SmartBinNotFoundException;
+    void manageRemovalRequest(String requestID, String result) throws RequestNotFoundException, SmartBinNotFoundException, RequestAlreadyConfirmedException, SmartBinAlreadyRemovedException;
 
     List<RemovalRequest> getAllRequests();
 
-    RemovalRequest getRequestByID(String requestID) throws RemovalRequestNotFound;
+    RemovalRequest getRequestByID(String requestID) throws RequestNotFoundException;
 
     List<RemovalRequest> getRequestByStatus(String status) throws RequestInvalidStatusException;
 }

@@ -47,7 +47,7 @@ public class RequestRestController {
      ----- */
 
     @RequestMapping(value="/allocation", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDTO> sendAllocationRequest(@RequestBody @Valid AllocationRequestSendDTO allocationRequestSendDTO, BindingResult bindingResult) throws SmartBinAlreadyAllocatedException, SmartBinTypeNotFoundException, InvalidPositionException {
+    public ResponseEntity<ResponseDTO> sendAllocationRequest(@RequestBody @Valid AllocationRequestSendDTO allocationRequestSendDTO, BindingResult bindingResult) throws RequestAlreadyExistsException, SmartBinTypeNotFoundException, InvalidPositionException {
 
         // Conversione DTO->Domain
         AllocationRequest allocationRequest = allocationRequestMapper.toAllocationRequest(allocationRequestSendDTO);
@@ -66,7 +66,7 @@ public class RequestRestController {
 
 
     @RequestMapping(value="/removal", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDTO> sendRemovalRequest(@RequestBody @Valid RemovalRequestSendDTO removalRequestSendDTO) throws SmartBinNotFoundException {
+    public ResponseEntity<ResponseDTO> sendRemovalRequest(@RequestBody @Valid RemovalRequestSendDTO removalRequestSendDTO) throws SmartBinNotFoundException, RequestAlreadyExistsException {
 
         // Conversione DTO->Domain
         RemovalRequest removalRequest = removalRequestMapper.toRemovalRequest(removalRequestSendDTO);
@@ -85,17 +85,17 @@ public class RequestRestController {
      ----- */
 
     @RequestMapping(value="/allocation/approve/{requestID}", method=RequestMethod.POST)
-    public ResponseEntity<?> approveAllocation(@PathVariable String requestID) throws AllocationRequestNotFound {
+    public ResponseEntity<?> approveAllocation(@PathVariable String requestID) throws RequestNotFoundException,SmartBinAlreadyAllocatedException, RequestAlreadyConfirmedException {
 
-        allocationRequestService.manageAllocationRequest(requestID, "Approve");
+        allocationRequestService.approveAllocationRequest(requestID);
 
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value="/allocation/disapprove/{requestID}", method=RequestMethod.POST)
-    public ResponseEntity<?> disapproveAllocation(@PathVariable String requestID) throws AllocationRequestNotFound {
+    public ResponseEntity<?> disapproveAllocation(@PathVariable String requestID) throws RequestNotFoundException, RequestAlreadyConfirmedException {
 
-        allocationRequestService.manageAllocationRequest(requestID, "Disapprove");
+        allocationRequestService.denyAllocationRequest(requestID);
 
         return ResponseEntity.noContent().build();
     }
@@ -105,13 +105,13 @@ public class RequestRestController {
      ----- */
 
     @RequestMapping(value="/removal/approve/{requestID}", method=RequestMethod.POST)
-    public ResponseEntity<?> approveRemoval(@PathVariable String requestID) throws RemovalRequestNotFound, SmartBinNotFoundException{
+    public ResponseEntity<?> approveRemoval(@PathVariable String requestID) throws RequestNotFoundException, SmartBinNotFoundException, RequestAlreadyConfirmedException, SmartBinAlreadyRemovedException{
         removalRequestService.manageRemovalRequest(requestID, "Approve");
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value="/removal/disapprove/{requestID}", method=RequestMethod.POST)
-    public ResponseEntity<?> disapproveRemoval(@PathVariable String requestID) throws RemovalRequestNotFound,SmartBinNotFoundException {
+    public ResponseEntity<?> disapproveRemoval(@PathVariable String requestID) throws RequestNotFoundException,SmartBinNotFoundException,RequestAlreadyConfirmedException, SmartBinAlreadyRemovedException{
         removalRequestService.manageRemovalRequest(requestID, "Disapprove");
         return ResponseEntity.noContent().build();
     }
@@ -190,7 +190,7 @@ public class RequestRestController {
      ----- */
 
     @RequestMapping(value="/allocation/{requestID}", method=RequestMethod.GET)
-    public AllocationRequestViewDTO getAllocationRequest(@PathVariable String requestID) throws AllocationRequestNotFound{
+    public AllocationRequestViewDTO getAllocationRequest(@PathVariable String requestID) throws RequestNotFoundException{
         AllocationRequest request = allocationRequestService.getRequestByID(requestID);
 
         AllocationRequestViewDTO result = allocationRequestMapper.toAllocationRequestDTO(request);
@@ -199,7 +199,7 @@ public class RequestRestController {
     }
 
     @RequestMapping(value="/removal/{requestID}", method=RequestMethod.GET)
-    public RemovalRequestViewDTO getRemovalRequest(@PathVariable String requestID) throws RemovalRequestNotFound{
+    public RemovalRequestViewDTO getRemovalRequest(@PathVariable String requestID) throws RequestNotFoundException{
 
         RemovalRequest request = removalRequestService.getRequestByID(requestID);
 

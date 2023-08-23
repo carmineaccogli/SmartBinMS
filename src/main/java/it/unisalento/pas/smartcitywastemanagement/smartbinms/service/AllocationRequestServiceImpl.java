@@ -2,9 +2,7 @@ package it.unisalento.pas.smartcitywastemanagement.smartbinms.service;
 
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.domain.AllocationRequest;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.domain.SmartBin;
-import it.unisalento.pas.smartcitywastemanagement.smartbinms.exceptions.AllocationRequestNotFound;
-import it.unisalento.pas.smartcitywastemanagement.smartbinms.exceptions.RequestInvalidStatusException;
-import it.unisalento.pas.smartcitywastemanagement.smartbinms.exceptions.SmartBinAlreadyAllocatedException;
+import it.unisalento.pas.smartcitywastemanagement.smartbinms.exceptions.*;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.repositories.AllocationRequestRepository;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.repositories.SmartBinRepository;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.repositories.TypeRepository;
@@ -29,16 +27,17 @@ public class AllocationRequestServiceImpl implements AllocationRequestService{
     AllocationRequestRepository allocationRequestRepository;
 
 
-    public String saveAllocationRequest(AllocationRequest allocationRequest) throws SmartBinAlreadyAllocatedException{
+    public String saveAllocationRequest(AllocationRequest allocationRequest) throws RequestAlreadyExistsException {
 
         /* STEP DI VALIDAZIONE DI BUSINESS
-        Controllo che la posizione richiesta non sia già occupata da uno smartBin allocato dello stesso tipo
+        Controllo che non esista una richiesta con status=PENDING dello stesso type e nella stessa position
+        Evito di accettare richieste con stessi dati e mantenerle in PENDING per evitare ridondanza e complessità di gestione
         */
-        List<SmartBin> smartBinList = smartBinRepository.findByPositionAndState(allocationRequest.getPosition(), SmartBin.State.ALLOCATED.toString());
-        boolean alreadyAllocated = isTypePresent(smartBinList, allocationRequest.getType().getName());
-        if (alreadyAllocated) {
-            throw new SmartBinAlreadyAllocatedException();
-        }
+        Boolean requestExists = allocationRequestRepository.existsAllocationRequestByTypeAndPositionAndStatus(allocationRequest.getType(), allocationRequest.getPosition(), AllocationRequest.Status.PENDING);
+        if(requestExists)
+            throw new RequestAlreadyExistsException();
+
+        // RICHIESTA VALIDA
 
         // Inseriamo i parametri rimanenti della richiesta
         allocationRequest.setStatus(AllocationRequest.Status.PENDING);
@@ -51,27 +50,36 @@ public class AllocationRequestServiceImpl implements AllocationRequestService{
 
 
 
-    public void manageAllocationRequest(String requestID, String result) throws AllocationRequestNotFound {
+    public void approveAllocationRequest(String requestID) throws RequestNotFoundException, SmartBinAlreadyAllocatedException, RequestAlreadyConfirmedException {
 
-        AllocationRequest allocationRequest = null;
+        // C1: Richiesta con dato ID esiste? Throw RequestNotFoundException
+        AllocationRequest allocationRequest = checkRequestExistence(requestID);
 
-        // Controllo l'esistenza della richiesta di allocazione
-        Optional<AllocationRequest> request = allocationRequestRepository.findById(requestID);
-        if(!request.isPresent())
-            throw new AllocationRequestNotFound();
+        // C2: Richiesta è nello stato PENDING? Throw RequestAlreadyConfirmedException
+        checkRequestValidity(allocationRequest);
 
-        allocationRequest = request.get();
+        /* C3:
+        Controllo che non esista già uno smartBin con stato=ALLOCATED, dello stesso type e nella stessa position di quello richiesto
+         */
+        Boolean smartBinExists = smartBinRepository.existsByTypeAndPositionAndState(allocationRequest.getType(),allocationRequest.getPosition(), SmartBin.State.ALLOCATED);
+        if(smartBinExists) {
 
-        allocationRequest.setDecisionDate(new Date());
-
-        // Richiesta NON APPROVATA
-        if(result.equals("Disapprove")) {
+            // Cambiamento stato richiesta in quanto è stata negata
             allocationRequest.setStatus(AllocationRequest.Status.REJECTED);
+            allocationRequest.setDecisionDate(new Date());
             allocationRequestRepository.save(allocationRequest);
-            return;
+
+            throw new SmartBinAlreadyAllocatedException();
         }
 
-        // Richiesta APPROVATA
+
+        /*boolean alreadyAllocated = isTypePresent(smartBinList, allocationRequest.getType().getName());
+        if (alreadyAllocated) {
+            throw new SmartBinAlreadyAllocatedException();
+        }*/
+
+        // C SUPERATI
+        allocationRequest.setDecisionDate(new Date());
         allocationRequest.setStatus(AllocationRequest.Status.ACCEPTED);
         allocationRequestRepository.save(allocationRequest);
 
@@ -81,6 +89,22 @@ public class AllocationRequestServiceImpl implements AllocationRequestService{
         smartBinRepository.save(smartBin);
     }
 
+    public void denyAllocationRequest(String requestID) throws RequestNotFoundException, RequestAlreadyConfirmedException {
+
+        // C1: Richiesta con dato ID esiste? Throw RequestNotFoundException
+        AllocationRequest allocationRequest = checkRequestExistence(requestID);
+
+        // C2: Richiesta è nello stato PENDING? Throw RequestAlreadyConfirmedException
+        checkRequestValidity(allocationRequest);
+
+        // CONTROLLI SUPERATI
+        allocationRequest.setDecisionDate(new Date());
+        allocationRequest.setStatus(AllocationRequest.Status.REJECTED);
+
+        allocationRequestRepository.save(allocationRequest);
+
+    }
+
 
 
     public List<AllocationRequest> getAllRequests() {
@@ -88,19 +112,9 @@ public class AllocationRequestServiceImpl implements AllocationRequestService{
         return allocationRequestRepository.findAll();
     }
 
-    public AllocationRequest getRequestByID(String requestID) throws AllocationRequestNotFound {
+    public AllocationRequest getRequestByID(String requestID) throws RequestNotFoundException {
 
-        AllocationRequest allocationRequest = null;
-
-        // Controllo l'esistenza della richiesta di allocazione
-        Optional<AllocationRequest> request = allocationRequestRepository.findById(requestID);
-        if(!request.isPresent())
-            throw new AllocationRequestNotFound();
-
-        allocationRequest = request.get();
-
-        return allocationRequest;
-
+        return checkRequestExistence(requestID);
     }
 
 
@@ -125,7 +139,7 @@ public class AllocationRequestServiceImpl implements AllocationRequestService{
 
         SmartBin smartBin = new SmartBin();
         smartBin.setState(SmartBin.State.ALLOCATED);
-        smartBin.setName(allocationRequest.getSmartBin_name());
+        smartBin.setName(allocationRequest.getSmartBinName());
         smartBin.setPosition(allocationRequest.getPosition());
         smartBin.setCurrentCapacity(0.0f);
         smartBin.setType(allocationRequest.getType());
@@ -141,7 +155,22 @@ public class AllocationRequestServiceImpl implements AllocationRequestService{
         } catch (IllegalArgumentException e) {
             return false;
         }
+    }
 
+    private AllocationRequest checkRequestExistence(String requestID) throws RequestNotFoundException{
+
+        // Controllo l'esistenza della richiesta di allocazione
+        Optional<AllocationRequest> request = allocationRequestRepository.findById(requestID);
+        if(!request.isPresent())
+            throw new RequestNotFoundException();
+
+        return request.get();
+    }
+
+    private void checkRequestValidity(AllocationRequest allocationRequest) throws RequestAlreadyConfirmedException {
+
+        if(allocationRequest.getStatus() != AllocationRequest.Status.PENDING)
+           throw new RequestAlreadyConfirmedException();
     }
 
 }

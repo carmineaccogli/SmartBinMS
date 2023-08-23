@@ -17,4 +17,6 @@ public interface RemovalRequestRepository extends MongoRepository<RemovalRequest
 
     @Query(value="{'status': {$regex:  '^?0$', $options:  'i'}}" )
     List<RemovalRequest> findByStatus(String status);
+
+    Boolean existsBySmartBinIDAndStatus(String smartBin_Id, RemovalRequest.Status status);
 }

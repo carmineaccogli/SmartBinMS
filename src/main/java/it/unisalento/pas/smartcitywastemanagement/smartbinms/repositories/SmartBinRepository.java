@@ -1,6 +1,7 @@
 package it.unisalento.pas.smartcitywastemanagement.smartbinms.repositories;
 
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.domain.SmartBin;
+import it.unisalento.pas.smartcitywastemanagement.smartbinms.domain.Type;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -21,6 +22,8 @@ public interface SmartBinRepository extends MongoRepository<SmartBin, String> {
 
     // Restituisce una lista di Smart Bin allocati in una determinata posizione e che siano segnalati come attivi
     public List<SmartBin> findByPositionAndState(GeoJsonPoint position, String state);
+
+    Boolean existsByTypeAndPositionAndState(Type type, GeoJsonPoint position, SmartBin.State state);
 
     @Query(value="{'state': {$regex:  '^?0$', $options:  'i'}}" )
     public List<SmartBin> findByState(String stateName);
