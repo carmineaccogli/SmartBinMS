@@ -18,34 +18,24 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class CustomExceptionHandler  {
 
-    @ExceptionHandler(AllocationRequestNotFound.class)
-    public ResponseEntity<Object> handleSpecificException(AllocationRequestNotFound ex) {
+    @ExceptionHandler(RequestNotFoundException.class)
+    public ResponseEntity<Object> handleSpecificException(RequestNotFoundException ex) {
         // Creare un oggetto di risposta personalizzato per l'eccezione specifica
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ExceptionDTO(
                         6,
-                        AllocationRequestNotFound.class.getSimpleName(),
-                        "Allocation request not found"
+                        RequestNotFoundException.class.getSimpleName(),
+                        "Request not found"
                 ));
     }
 
-    @ExceptionHandler(RemovalRequestNotFound.class)
-    public ResponseEntity<Object> handleSpecificException(RemovalRequestNotFound ex) {
-        // Creare un oggetto di risposta personalizzato per l'eccezione specifica
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ExceptionDTO(
-                        7,
-                        RemovalRequestNotFound.class.getSimpleName(),
-                        "Removal request not found"
-                ));
-    }
 
     @ExceptionHandler(SmartBinStateInvalidException.class)
     public ResponseEntity<Object> handleAnotherException(SmartBinStateInvalidException ex) {
         // Creare un oggetto di risposta personalizzato per un'altra eccezione specifica
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ExceptionDTO(
-                        8,
+                        7,
                         SmartBinStateInvalidException.class.getSimpleName(),
                         "SmartBin state is invalid"
                 ));
@@ -56,7 +46,7 @@ public class CustomExceptionHandler  {
         // Creare un oggetto di risposta personalizzato per un'altra eccezione specifica
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ExceptionDTO(
-                        9,
+                        8,
                         SmartBinTypeNotFoundException.class.getSimpleName(),
                         "SmartBin type not found"
                 ));
@@ -67,9 +57,20 @@ public class CustomExceptionHandler  {
         // Creare un oggetto di risposta personalizzato per un'altra eccezione specifica
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ExceptionDTO(
-                        10,
+                        9,
                         SmartBinAlreadyAllocatedException.class.getSimpleName(),
                         "SmartBin of the same type is already allocated in that position"
+                ));
+    }
+
+    @ExceptionHandler(SmartBinAlreadyRemovedException.class)
+    public ResponseEntity<Object> handleAnotherException(SmartBinAlreadyRemovedException ex) {
+        // Creare un oggetto di risposta personalizzato per un'altra eccezione specifica
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ExceptionDTO(
+                        10,
+                        SmartBinAlreadyRemovedException.class.getSimpleName(),
+                        "The smart bin selected is already deallocated"
                 ));
     }
 
@@ -123,6 +124,30 @@ public class CustomExceptionHandler  {
                         errorString.deleteCharAt(errorString.length() - 1).toString()
                 ));
     }
+
+
+    @ExceptionHandler(RequestAlreadyExistsException.class)
+    public ResponseEntity<Object> handleAnotherException(RequestAlreadyExistsException ex) {
+        // Creare un oggetto di risposta personalizzato per un'altra eccezione specifica
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ExceptionDTO(
+                        15,
+                        RequestAlreadyExistsException.class.getSimpleName(),
+                        "The descripted request already exists"
+                ));
+    }
+
+    @ExceptionHandler(RequestAlreadyConfirmedException.class)
+    public ResponseEntity<Object> handleAnotherException(RequestAlreadyConfirmedException ex) {
+        // Creare un oggetto di risposta personalizzato per un'altra eccezione specifica
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .body(new ExceptionDTO(
+                        16,
+                        RequestAlreadyConfirmedException.class.getSimpleName(),
+                        "The selected request has already been confirmed and cannot be modified"
+                ));
+    }
+
 
 
 
