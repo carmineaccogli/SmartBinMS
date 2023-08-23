@@ -11,6 +11,7 @@ public class TypeMapper {
         Type newType = new Type();
         newType.setName(typeDTO.getName());
         newType.setDescription(typeDTO.getDescription());
+        newType.setColor(typeDTO.getColor());
         return newType;
     }
 
@@ -19,6 +20,7 @@ public class TypeMapper {
 
         typeDTO.setName(type.getName());
         typeDTO.setDescription(type.getDescription());
+        typeDTO.setColor(type.getColor());
 
         return typeDTO;
     }

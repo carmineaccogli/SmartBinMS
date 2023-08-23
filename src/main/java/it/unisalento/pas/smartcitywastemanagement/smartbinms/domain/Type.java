@@ -16,6 +16,8 @@ public class Type {
 
     private String description;
 
+    private String color;
+
 
 
 
@@ -42,5 +44,13 @@ public class Type {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }
