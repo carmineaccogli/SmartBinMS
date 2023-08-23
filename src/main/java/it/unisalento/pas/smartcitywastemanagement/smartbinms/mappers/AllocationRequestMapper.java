@@ -22,7 +22,7 @@ public class AllocationRequestMapper {
 
         AllocationRequest allocationRequest = new AllocationRequest();
 
-        allocationRequest.setSmartBin_name(allocationRequestSendDTO.getSmartBin_name());
+        allocationRequest.setSmartBinName(allocationRequestSendDTO.getSmartBinName());
         allocationRequest.setPosition(allocationRequestSendDTO.getPosition());
         allocationRequest.setTotalCapacity(allocationRequestSendDTO.getTotalCapacity());
 
@@ -42,7 +42,7 @@ public class AllocationRequestMapper {
 
         AllocationRequestViewDTO allocationRequestViewDTO = new AllocationRequestViewDTO();
 
-        allocationRequestViewDTO.setSmartBin_name(allocationRequest.getSmartBin_name());
+        allocationRequestViewDTO.setSmartBinName(allocationRequest.getSmartBinName());
         allocationRequestViewDTO.setStatus(allocationRequest.getStatus().toString());
         allocationRequestViewDTO.setType(allocationRequest.getType().getName());
         allocationRequestViewDTO.setPosition(allocationRequest.getPosition());

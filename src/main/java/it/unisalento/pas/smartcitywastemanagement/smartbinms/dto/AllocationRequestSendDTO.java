@@ -13,7 +13,7 @@ public class AllocationRequestSendDTO {
 
 
     @NotBlank(message = "{NotBlank.AllocationRequest.smartBin_name}")
-    private String smartBin_name;
+    private String smartBinName;
 
     @NotNull(message = "{NotNull.AllocationRequest.position}")
     @ValidGeoJSONPoint
@@ -52,11 +52,11 @@ public class AllocationRequestSendDTO {
     }
 
 
-    public String getSmartBin_name() {
-        return smartBin_name;
+    public String getSmartBinName() {
+        return smartBinName;
     }
 
-    public void setSmartBin_name(String smartBin_name) {
-        this.smartBin_name = smartBin_name;
+    public void setSmartBinName(String smartBinName) {
+        this.smartBinName = smartBinName;
     }
 }

@@ -12,7 +12,7 @@ public class RemovalRequestMapper {
     public RemovalRequest toRemovalRequest(RemovalRequestSendDTO removalRequestSendDTO){
 
         RemovalRequest removalRequest = new RemovalRequest();
-        removalRequest.setSmartBin_id(removalRequestSendDTO.getSmartBin_id());
+        removalRequest.setSmartBinID(removalRequestSendDTO.getSmartBinID());
         return removalRequest;
     }
 
@@ -20,7 +20,7 @@ public class RemovalRequestMapper {
 
         RemovalRequestViewDTO removalRequestViewDTO = new RemovalRequestViewDTO();
 
-        removalRequestViewDTO.setSmartBin_id(removalRequest.getSmartBin_id());
+        removalRequestViewDTO.setSmartBinID(removalRequest.getSmartBinID());
         removalRequestViewDTO.setStatus(removalRequest.getStatus().toString());
         removalRequestViewDTO.setRequestedDate(removalRequest.getRequestedDate());
         removalRequestViewDTO.setDecisionDate(removalRequest.getDecisionDate());

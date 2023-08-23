@@ -16,7 +16,7 @@ public class AllocationRequestViewDTO {
 
 
     private String id;
-    private String smartBin_name;
+    private String smartBinName;
 
     @JsonDeserialize(using = GeoJsonDeserializer.class)
     @JsonSerialize(using = GeoJsonSerializer.class)
@@ -35,12 +35,12 @@ public class AllocationRequestViewDTO {
     private String type;
 
 
-    public String getSmartBin_name() {
-        return smartBin_name;
+    public String getSmartBinName() {
+        return smartBinName;
     }
 
-    public void setSmartBin_name(String smartBin_name) {
-        this.smartBin_name = smartBin_name;
+    public void setSmartBinName(String smartBinName) {
+        this.smartBinName = smartBinName;
     }
 
     public GeoJsonPoint getPosition() {

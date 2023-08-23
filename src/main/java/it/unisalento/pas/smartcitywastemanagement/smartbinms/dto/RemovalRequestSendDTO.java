@@ -5,15 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 public class RemovalRequestSendDTO {
 
     @NotBlank(message = "{NotBlank.RemovalRequest.smartBin_id}")
-    private String smartBin_id;
+    private String smartBinID;
 
 
-
-    public String getSmartBin_id() {
-        return smartBin_id;
+    public String getSmartBinID() {
+        return smartBinID;
     }
 
-    public void setSmartBin_id(String smartBin_id) {
-        this.smartBin_id = smartBin_id;
+    public void setSmartBinID(String smartBinID) {
+        this.smartBinID = smartBinID;
     }
 }
