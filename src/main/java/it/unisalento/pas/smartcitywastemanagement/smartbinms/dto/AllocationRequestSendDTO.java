@@ -4,24 +4,26 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.validators.ValidGeoJSONPoint;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class AllocationRequestSendDTO {
 
 
-    @NotBlank(message = "{NotBlank.AllocationRequest.smartBin_name}")
+    @NotBlank(message = "{NotBlank.AllocationRequest.smartBinName}")
     private String smartBinName;
 
-    @NotNull(message = "{NotNull.AllocationRequest.position}")
-    @ValidGeoJSONPoint
+
+    @ValidGeoJSONPoint(message = "{ValidGeoJSONPoint.AllocationRequest.position}")
     private GeoJsonPoint position;
 
     @NotNull(message = "{NotNull.AllocationRequest.totalCapacity}")
     @Min(value=1, message = "{Min.AllocationRequest.totalCapacity}")
-    private Float totalCapacity;
+    private BigDecimal totalCapacity;
 
     @NotBlank(message = "{NotBlank.AllocationRequest.type}")
     private String type;
@@ -35,11 +37,11 @@ public class AllocationRequestSendDTO {
         this.position = position;
     }
 
-    public Float getTotalCapacity() {
+    public BigDecimal getTotalCapacity() {
         return totalCapacity;
     }
 
-    public void setTotalCapacity(Float totalCapacity) {
+    public void setTotalCapacity(BigDecimal totalCapacity) {
         this.totalCapacity = totalCapacity;
     }
 

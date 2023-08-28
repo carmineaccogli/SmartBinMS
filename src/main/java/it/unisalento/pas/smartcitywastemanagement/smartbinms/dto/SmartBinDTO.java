@@ -7,6 +7,8 @@ import it.unisalento.pas.smartcitywastemanagement.smartbinms.utility.GeoJsonDese
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.utility.GeoJsonSerializer;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
+import java.math.BigDecimal;
+
 public class SmartBinDTO {
 
     private String id;
@@ -18,11 +20,11 @@ public class SmartBinDTO {
     private String state;
     private String type;
 
-    @JsonFormat(pattern = "#.##")
-    private Float totalCapacity;
 
-    @JsonFormat(pattern = "#.##")
-    private Float currentCapacity;
+    private BigDecimal totalCapacity;
+
+
+    private BigDecimal currentCapacity;
 
 
     public GeoJsonPoint getPosition() {
@@ -49,19 +51,19 @@ public class SmartBinDTO {
         this.type = type;
     }
 
-    public Float getTotalCapacity() {
+    public BigDecimal getTotalCapacity() {
         return totalCapacity;
     }
 
-    public void setTotalCapacity(Float totalCapacity) {
+    public void setTotalCapacity(BigDecimal totalCapacity) {
         this.totalCapacity = totalCapacity;
     }
 
-    public Float getCurrentCapacity() {
+    public BigDecimal getCurrentCapacity() {
         return currentCapacity;
     }
 
-    public void setCurrentCapacity(Float currentCapacity) {
+    public void setCurrentCapacity(BigDecimal currentCapacity) {
         this.currentCapacity = currentCapacity;
     }
 

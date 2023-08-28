@@ -6,6 +6,7 @@ import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.AllocationReque
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.AllocationRequestViewDTO;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.exceptions.SmartBinTypeNotFoundException;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.repositories.TypeRepository;
+import org.bson.types.Decimal128;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +25,7 @@ public class AllocationRequestMapper {
 
         allocationRequest.setSmartBinName(allocationRequestSendDTO.getSmartBinName());
         allocationRequest.setPosition(allocationRequestSendDTO.getPosition());
-        allocationRequest.setTotalCapacity(allocationRequestSendDTO.getTotalCapacity());
+        allocationRequest.setTotalCapacity(new Decimal128(allocationRequestSendDTO.getTotalCapacity()));
 
         // Ricerca oggetto type
         Optional<Type> type = typeRepository.findByTypeName(allocationRequestSendDTO.getType());
@@ -46,7 +47,7 @@ public class AllocationRequestMapper {
         allocationRequestViewDTO.setStatus(allocationRequest.getStatus().toString());
         allocationRequestViewDTO.setType(allocationRequest.getType().getName());
         allocationRequestViewDTO.setPosition(allocationRequest.getPosition());
-        allocationRequestViewDTO.setTotalCapacity(allocationRequest.getTotalCapacity());
+        allocationRequestViewDTO.setTotalCapacity(allocationRequest.getTotalCapacity().bigDecimalValue());
         allocationRequestViewDTO.setRequestedDate(allocationRequest.getRequestedDate());
         allocationRequestViewDTO.setDecisionDate(allocationRequest.getDecisionDate());
         allocationRequestViewDTO.setId(allocationRequest.getId());

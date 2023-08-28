@@ -47,13 +47,13 @@ public class RequestRestController {
      ----- */
 
     @RequestMapping(value="/allocation", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDTO> sendAllocationRequest(@RequestBody @Valid AllocationRequestSendDTO allocationRequestSendDTO, BindingResult bindingResult) throws RequestAlreadyExistsException, SmartBinTypeNotFoundException, InvalidPositionException {
+    public ResponseEntity<ResponseDTO> sendAllocationRequest(@Valid @RequestBody AllocationRequestSendDTO allocationRequestSendDTO) throws RequestAlreadyExistsException, SmartBinTypeNotFoundException, InvalidPositionException {
 
         // Conversione DTO->Domain
         AllocationRequest allocationRequest = allocationRequestMapper.toAllocationRequest(allocationRequestSendDTO);
 
-        if (getSavePositionError(bindingResult))
-            throw new InvalidPositionException();
+        /*if (getSavePositionError(bindingResult))
+            throw new InvalidPositionException();*/
 
         // Validazione e salvataggio della richiesta
         String createdId = allocationRequestService.saveAllocationRequest(allocationRequest);
@@ -229,7 +229,7 @@ public class RequestRestController {
         return result;
     }
 
-    private boolean getSavePositionError(BindingResult errors) {
+    /*private boolean getSavePositionError(BindingResult errors) {
         if (errors.hasErrors()) {
             for (FieldError error : errors.getFieldErrors()) {
                 String fieldName = error.getField();
@@ -240,6 +240,6 @@ public class RequestRestController {
             }
         }
         return false;
-    }
+    }*/
 
 }

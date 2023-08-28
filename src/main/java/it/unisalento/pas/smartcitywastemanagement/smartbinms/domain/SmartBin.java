@@ -1,5 +1,6 @@
 package it.unisalento.pas.smartcitywastemanagement.smartbinms.domain;
 
+import org.bson.types.Decimal128;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -24,9 +25,9 @@ public class SmartBin {
     @DBRef
     private Type type;
 
-    private Float totalCapacity;
+    private Decimal128 totalCapacity;
 
-    private Float currentCapacity;
+    private Decimal128 currentCapacity;
 
 
     public enum State {
@@ -54,19 +55,19 @@ public class SmartBin {
 
 
 
-    public Float getTotalCapacity() {
+    public Decimal128 getTotalCapacity() {
         return totalCapacity;
     }
 
-    public void setTotalCapacity(Float totalCapacity) {
+    public void setTotalCapacity(Decimal128 totalCapacity) {
         this.totalCapacity = totalCapacity;
     }
 
-    public Float getCurrentCapacity() {
+    public Decimal128 getCurrentCapacity() {
         return currentCapacity;
     }
 
-    public void setCurrentCapacity(Float currentCapacity) {
+    public void setCurrentCapacity(Decimal128 currentCapacity) {
         this.currentCapacity = currentCapacity;
     }
 

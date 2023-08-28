@@ -23,8 +23,8 @@ public class SmartBinMapper {
         smartBinDTO.setPosition(smartBin.getPosition());
 
         smartBinDTO.setType(smartBin.getType().getName());
-        smartBinDTO.setCurrentCapacity(smartBin.getCurrentCapacity());
-        smartBinDTO.setTotalCapacity(smartBin.getTotalCapacity());
+        smartBinDTO.setCurrentCapacity(smartBin.getCurrentCapacity().bigDecimalValue());
+        smartBinDTO.setTotalCapacity(smartBin.getTotalCapacity().bigDecimalValue());
         smartBinDTO.setId(smartBin.getId());
 
         return smartBinDTO;
