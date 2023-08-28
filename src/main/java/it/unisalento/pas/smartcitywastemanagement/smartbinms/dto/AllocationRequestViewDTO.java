@@ -10,6 +10,7 @@ import it.unisalento.pas.smartcitywastemanagement.smartbinms.utility.GeoJsonSeri
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class AllocationRequestViewDTO {
@@ -29,8 +30,8 @@ public class AllocationRequestViewDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date decisionDate;
 
-    @JsonFormat(pattern = "#.##")
-    private Float totalCapacity;
+
+    private BigDecimal totalCapacity;
 
     private String type;
 
@@ -75,11 +76,11 @@ public class AllocationRequestViewDTO {
         this.decisionDate = decisionDate;
     }
 
-    public Float getTotalCapacity() {
+    public BigDecimal getTotalCapacity() {
         return totalCapacity;
     }
 
-    public void setTotalCapacity(Float totalCapacity) {
+    public void setTotalCapacity(BigDecimal totalCapacity) {
         this.totalCapacity = totalCapacity;
     }
 

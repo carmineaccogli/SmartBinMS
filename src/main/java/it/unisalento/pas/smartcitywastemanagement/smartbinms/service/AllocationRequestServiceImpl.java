@@ -6,6 +6,7 @@ import it.unisalento.pas.smartcitywastemanagement.smartbinms.exceptions.*;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.repositories.AllocationRequestRepository;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.repositories.SmartBinRepository;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.repositories.TypeRepository;
+import org.bson.types.Decimal128;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -141,7 +142,7 @@ public class AllocationRequestServiceImpl implements AllocationRequestService{
         smartBin.setState(SmartBin.State.ALLOCATED);
         smartBin.setName(allocationRequest.getSmartBinName());
         smartBin.setPosition(allocationRequest.getPosition());
-        smartBin.setCurrentCapacity(0.0f);
+        smartBin.setCurrentCapacity(new Decimal128(0));
         smartBin.setType(allocationRequest.getType());
         smartBin.setTotalCapacity(allocationRequest.getTotalCapacity());
         return smartBin;

@@ -25,6 +25,9 @@ public class ValidGeoJSONPointValidator implements ConstraintValidator<ValidGeoJ
     @Override
     public boolean isValid(GeoJsonPoint value, ConstraintValidatorContext context) {
 
+        if(value == null)
+            return false;
+
         double x = value.getX();
         double y = value.getY();
 

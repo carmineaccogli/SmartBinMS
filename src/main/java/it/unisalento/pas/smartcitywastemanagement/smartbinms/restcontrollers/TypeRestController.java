@@ -8,7 +8,9 @@ import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.TypeDTO;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.mappers.TypeMapper;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.repositories.TypeRepository;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.service.TypeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +34,7 @@ public class TypeRestController {
         private TypeService typeService;
 
         @RequestMapping(value="/add", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<ResponseDTO> addNewType(@RequestBody TypeDTO typeDTO) {
+        public ResponseEntity<ResponseDTO> addNewType(@Valid @RequestBody TypeDTO typeDTO) throws DuplicateKeyException {
 
             Type type = typeMapper.toType(typeDTO);
             String createdID = typeService.saveType(type);
