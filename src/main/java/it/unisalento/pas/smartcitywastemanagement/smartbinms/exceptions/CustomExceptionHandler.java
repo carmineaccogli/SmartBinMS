@@ -148,6 +148,17 @@ public class CustomExceptionHandler  {
                 ));
     }
 
+    @ExceptionHandler(SmartBinIsFullException.class)
+    public ResponseEntity<Object> handleAnotherException(SmartBinIsFullException ex) {
+        // Creare un oggetto di risposta personalizzato per un'altra eccezione specifica
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .body(new ExceptionDTO(
+                        17,
+                        SmartBinIsFullException.class.getSimpleName(),
+                        "Smart bin has reached maximum capacity. Cannot complete disposal."
+                ));
+    }
+
 
 
 

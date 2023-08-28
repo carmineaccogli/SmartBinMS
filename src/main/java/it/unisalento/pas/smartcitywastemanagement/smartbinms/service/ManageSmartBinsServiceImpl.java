@@ -5,9 +5,12 @@ import it.unisalento.pas.smartcitywastemanagement.smartbinms.domain.Type;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.exceptions.*;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.repositories.SmartBinRepository;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.repositories.TypeRepository;
+import org.bson.types.Decimal128;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,7 +73,37 @@ public class ManageSmartBinsServiceImpl implements ManageSmartBinsService{
 
         return binRequested;
 
+    }
+
+
+    public void manageDisposalRequest(String smartBinID, BigDecimal disposalAmount) throws SmartBinNotFoundException, SmartBinIsFullException {
+
+        // Check smartBinID
+        SmartBin binRequested = null;
+
+        // Controllo l'esistenza del bin richiesto
+        Optional<SmartBin> smartBin = smartBinRepository.findById(smartBinID);
+        if(!smartBin.isPresent())
+            throw new SmartBinNotFoundException();
+
+        binRequested = smartBin.get();
+
+        // Setting scala valore in ingresso se supera la sensibilità di 1 gr
+        if(disposalAmount.scale() > 4) {
+            disposalAmount = disposalAmount.setScale(4, RoundingMode.HALF_UP);
         }
+
+        // Check capacity
+        boolean canPerform = checkPerformDisposal(binRequested,disposalAmount);
+
+        if(!canPerform)
+            throw new SmartBinIsFullException();
+
+        // Update in caso di successo
+        binRequested.setCurrentCapacity(new Decimal128(binRequested.getCurrentCapacity().bigDecimalValue().add(disposalAmount)));
+        smartBinRepository.save(binRequested);
+    }
+
 
 
 
@@ -84,6 +117,16 @@ public class ManageSmartBinsServiceImpl implements ManageSmartBinsService{
             return false;
         }
 
+    }
+
+    private boolean checkPerformDisposal(SmartBin bin, BigDecimal disposalAmount){
+
+        BigDecimal newCurrentCapacity = bin.getCurrentCapacity().bigDecimalValue().add(disposalAmount);
+
+        if(newCurrentCapacity.compareTo(bin.getTotalCapacity().bigDecimalValue()) > 0)
+            return false;
+
+        return true;
     }
 }
 

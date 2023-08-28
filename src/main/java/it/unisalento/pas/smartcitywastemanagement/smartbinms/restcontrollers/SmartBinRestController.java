@@ -2,13 +2,17 @@ package it.unisalento.pas.smartcitywastemanagement.smartbinms.restcontrollers;
 
 
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.domain.SmartBin;
+import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.DisposalRequestDTO;
+import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.ResponseDTO;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.SmartBinDTO;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.exceptions.*;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.mappers.SmartBinMapper;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.service.ManageSmartBinsService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,6 +72,17 @@ public class SmartBinRestController {
         return binDTO;
     }
 
+
+    /*-----
+    API PER AGGIORNARE LA CAPACITA' DI UNO SMARTBIN
+     -----*/
+    @RequestMapping(value="/{smartBinID}",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDTO> doDisposal(@PathVariable String smartBinID, @RequestBody @Valid DisposalRequestDTO disposalRequest) throws SmartBinNotFoundException, SmartBinIsFullException {
+
+        manageSmartBinsService.manageDisposalRequest(smartBinID, disposalRequest.getAmount());
+
+        return ResponseEntity.noContent().build();
+    }
 
     /*-----
     API PER FILTRARE SMARTBIN
@@ -134,6 +149,9 @@ public class SmartBinRestController {
 
         return ResponseEntity.ok(filteredBins);
     }
+
+
+
 
 
 }
