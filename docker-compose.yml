@@ -16,8 +16,19 @@ services:
     networks:
       - my-network
 
+  rabbitmq:
+    image: "rabbitmq:management"
+    hostname: "rabbit"
+    ports:
+      - "5672:5672"  # Porta per le connessioni AMQP
+      - "15672:15672"  # Porta per l'interfaccia di gestione web
+    expose:
+      - "5672"
+    networks:
+      - my-network
 
-  smartbinsManagement_service:
+
+  smartbinsManagementService:
     platform: linux/x86_64
     image: openjdk:17-jdk-alpine
     container_name: SMARTBINS_SERVICE
@@ -28,6 +39,7 @@ services:
       - "8001"
     depends_on:
       - database
+      - rabbitmq
     networks:
       - my-network
     volumes:
