@@ -86,6 +86,7 @@ public class ManageSmartBinsServiceImpl implements ManageSmartBinsService{
         if(!smartBin.isPresent())
             throw new SmartBinNotFoundException();
 
+
         binRequested = smartBin.get();
 
         // Setting scala valore in ingresso se supera la sensibilità di 1 gr
@@ -93,11 +94,11 @@ public class ManageSmartBinsServiceImpl implements ManageSmartBinsService{
             disposalAmount = disposalAmount.setScale(4, RoundingMode.HALF_UP);
         }
 
-        // Check capacity
+        /*// Check capacity
         boolean canPerform = checkPerformDisposal(binRequested,disposalAmount);
 
         if(!canPerform)
-            throw new SmartBinIsFullException();
+            throw new SmartBinIsFullException();*/
 
         // Update in caso di successo
         binRequested.setCurrentCapacity(new Decimal128(binRequested.getCurrentCapacity().bigDecimalValue().add(disposalAmount)));
