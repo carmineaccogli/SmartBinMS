@@ -76,13 +76,13 @@ public class SmartBinRestController {
     /*-----
     API PER AGGIORNARE LA CAPACITA' DI UNO SMARTBIN
      -----*/
-    @RequestMapping(value="/{smartBinID}",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    /*@RequestMapping(value="/{smartBinID}",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO> doDisposal(@PathVariable String smartBinID, @RequestBody @Valid DisposalRequestDTO disposalRequest) throws SmartBinNotFoundException, SmartBinIsFullException {
 
         manageSmartBinsService.manageDisposalRequest(smartBinID, disposalRequest.getAmount());
 
         return ResponseEntity.noContent().build();
-    }
+    }*/
 
     /*-----
     API PER FILTRARE SMARTBIN
