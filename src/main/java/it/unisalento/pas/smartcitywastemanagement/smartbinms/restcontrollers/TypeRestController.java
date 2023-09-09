@@ -38,7 +38,7 @@ public class TypeRestController {
 
             Type type = typeMapper.toType(typeDTO);
             String createdID = typeService.saveType(type);
-            return new ResponseEntity<>(new ResponseDTO("Type added successfully","{id:"+createdID+"}"),
+            return new ResponseEntity<>(new ResponseDTO("Type added successfully","id:"+createdID),
                     HttpStatus.CREATED);
         }
 
