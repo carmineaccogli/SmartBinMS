@@ -145,6 +145,9 @@ public class AllocationRequestServiceImpl implements AllocationRequestService{
         smartBin.setCurrentCapacity(new Decimal128(0));
         smartBin.setType(allocationRequest.getType());
         smartBin.setTotalCapacity(allocationRequest.getTotalCapacity());
+
+        // Impostazione automatica del threshold di allarme per la capacità
+        smartBin.setCapacityThreshold(0.8f);
         return smartBin;
     }
 

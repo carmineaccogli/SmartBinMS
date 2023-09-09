@@ -29,6 +29,8 @@ public class SmartBin {
 
     private Decimal128 currentCapacity;
 
+    private Float capacityThreshold;
+
 
     public enum State {
         ALLOCATED,DEALLOCATED
@@ -94,6 +96,14 @@ public class SmartBin {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Float getCapacityThreshold() {
+        return capacityThreshold;
+    }
+
+    public void setCapacityThreshold(Float capacityThreshold) {
+        this.capacityThreshold = capacityThreshold;
     }
 }
 

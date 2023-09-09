@@ -26,6 +26,8 @@ public class SmartBinDTO {
 
     private BigDecimal currentCapacity;
 
+    private String capacityThreshold;
+
 
     public GeoJsonPoint getPosition() {
         return position;
@@ -81,5 +83,13 @@ public class SmartBinDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getCapacityThreshold() {
+        return capacityThreshold;
+    }
+
+    public void setCapacityThreshold(Float capacityThreshold) {
+        this.capacityThreshold = String.format("%.2f",capacityThreshold);
     }
 }
