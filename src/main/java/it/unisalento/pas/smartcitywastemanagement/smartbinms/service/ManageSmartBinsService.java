@@ -25,4 +25,6 @@ public interface ManageSmartBinsService {
 
     void manageDisposalRequest(String smartBinID, BigDecimal disposalAmount) throws SmartBinNotFoundException, SmartBinIsFullException;
 
+
+    void updateCapacityThreshold(String smartBinID, Float newCapacity) throws SmartBinNotFoundException;
 }

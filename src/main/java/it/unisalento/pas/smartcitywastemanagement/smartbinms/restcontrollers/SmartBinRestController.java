@@ -2,6 +2,7 @@ package it.unisalento.pas.smartcitywastemanagement.smartbinms.restcontrollers;
 
 
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.domain.SmartBin;
+import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.CapacityThresholdRequestDTO;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.DisposalRequestDTO;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.ResponseDTO;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.SmartBinDTO;
@@ -14,6 +15,7 @@ import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -83,6 +85,14 @@ public class SmartBinRestController {
 
         return ResponseEntity.noContent().build();
     }*/
+
+    @RequestMapping(value="/{smartBinID}/capacityThreshold", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateCapacityThreshold(@PathVariable("smartBinID") String smartBinID, @RequestBody @Valid CapacityThresholdRequestDTO capacityThresholdRequestDTO) throws SmartBinNotFoundException {
+
+        manageSmartBinsService.updateCapacityThreshold(smartBinID, capacityThresholdRequestDTO.getCapacityThreshold());
+
+        return ResponseEntity.noContent().build();
+    }
 
     /*-----
     API PER FILTRARE SMARTBIN

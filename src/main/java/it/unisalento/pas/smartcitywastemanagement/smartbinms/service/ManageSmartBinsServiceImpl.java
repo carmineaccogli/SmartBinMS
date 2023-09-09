@@ -105,6 +105,22 @@ public class ManageSmartBinsServiceImpl implements ManageSmartBinsService{
         smartBinRepository.save(binRequested);
     }
 
+    public void updateCapacityThreshold(String smartBinID, Float newCapacity) throws SmartBinNotFoundException {
+
+        // Check smartBinID
+        SmartBin binRequested = null;
+
+        // Controllo l'esistenza del bin richiesto
+        Optional<SmartBin> smartBin = smartBinRepository.findById(smartBinID);
+        if(!smartBin.isPresent())
+            throw new SmartBinNotFoundException();
+
+        binRequested = smartBin.get();
+
+        binRequested.setCapacityThreshold(newCapacity);
+        smartBinRepository.save(binRequested);
+    }
+
 
 
 
