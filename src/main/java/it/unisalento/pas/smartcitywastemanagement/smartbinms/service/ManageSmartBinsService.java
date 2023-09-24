@@ -27,4 +27,6 @@ public interface ManageSmartBinsService {
 
 
     void updateCapacityThreshold(String smartBinID, Float newCapacity) throws SmartBinNotFoundException;
+
+    void resetCapacity(String smartBinID) throws SmartBinNotFoundException;
 }
