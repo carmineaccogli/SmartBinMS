@@ -94,6 +94,12 @@ public class SmartBinRestController {
         return ResponseEntity.noContent().build();
     }
 
+    @RequestMapping(value="{smartBinID}/reset", method=RequestMethod.POST)
+    public ResponseEntity<?> resetSmartBinCapacity(@PathVariable("smartBinID") String smartBinID) throws SmartBinNotFoundException {
+        manageSmartBinsService.resetCapacity(smartBinID);
+        return ResponseEntity.noContent().build();
+    }
+
     /*-----
     API PER FILTRARE SMARTBIN
     -----*/
