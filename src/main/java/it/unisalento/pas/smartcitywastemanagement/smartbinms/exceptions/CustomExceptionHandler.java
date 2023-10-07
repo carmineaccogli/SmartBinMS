@@ -29,6 +29,17 @@ public class CustomExceptionHandler  {
                 ));
     }
 
+    @ExceptionHandler(CleaningPathNotFoundException.class)
+    public ResponseEntity<Object> handleSpecificException(CleaningPathNotFoundException ex) {
+        // Creare un oggetto di risposta personalizzato per l'eccezione specifica
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ExceptionDTO(
+                        6,
+                        CleaningPathNotFoundException.class.getSimpleName(),
+                        "Cleaning path not found"
+                ));
+    }
+
 
     @ExceptionHandler(SmartBinStateInvalidException.class)
     public ResponseEntity<Object> handleAnotherException(SmartBinStateInvalidException ex) {
@@ -78,7 +89,7 @@ public class CustomExceptionHandler  {
     @ExceptionHandler(SmartBinNotFoundException.class)
     public ResponseEntity<Object> handleAnotherException(SmartBinNotFoundException ex) {
         // Creare un oggetto di risposta personalizzato per un'altra eccezione specifica
-        return ResponseEntity.status(HttpStatus.CONFLICT)
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ExceptionDTO(
                         11,
                         SmartBinNotFoundException.class.getSimpleName(),
