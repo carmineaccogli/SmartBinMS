@@ -24,6 +24,7 @@ public class CleaningPathServiceImpl implements CleaningPathService {
         cleaningPath.setDone(false);
 
         CleaningPath result = cleaningPathRepository.save(cleaningPath);
+
         return result.getId();
     }
 

@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 
 public class TypeDTO {
 
+    private String Id;
     @NotBlank(message = "{NotBlank.Type.name}")
     private String name;
 
@@ -39,5 +40,13 @@ public class TypeDTO {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
     }
 }

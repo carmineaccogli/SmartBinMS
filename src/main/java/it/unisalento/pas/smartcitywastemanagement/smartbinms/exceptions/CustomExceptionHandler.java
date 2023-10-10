@@ -34,7 +34,7 @@ public class CustomExceptionHandler  {
         // Creare un oggetto di risposta personalizzato per l'eccezione specifica
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ExceptionDTO(
-                        6,
+                        8,
                         CleaningPathNotFoundException.class.getSimpleName(),
                         "Cleaning path not found"
                 ));

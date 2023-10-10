@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Type {
 
     @Id
-    private String Id;
+    private String id;
 
     @Indexed(unique = true)
     private String name;
@@ -23,11 +23,11 @@ public class Type {
 
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String Id) {
-        this.Id = Id;
+        this.id = Id;
     }
 
     public String getName() {

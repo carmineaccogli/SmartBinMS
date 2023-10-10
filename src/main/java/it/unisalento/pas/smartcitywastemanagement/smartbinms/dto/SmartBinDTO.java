@@ -8,6 +8,7 @@ import it.unisalento.pas.smartcitywastemanagement.smartbinms.utility.GeoJsonSeri
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 
 public class SmartBinDTO {
 
@@ -90,6 +91,6 @@ public class SmartBinDTO {
     }
 
     public void setCapacityThreshold(Float capacityThreshold) {
-        this.capacityThreshold = String.format("%.2f",capacityThreshold);
+        this.capacityThreshold = String.format(Locale.US,"%.2f",capacityThreshold);
     }
 }
