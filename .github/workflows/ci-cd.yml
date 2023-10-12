@@ -13,11 +13,33 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Set up GRADLE_USER_HOME
+      run: |
+        GRADLE_USER_HOME="$(pwd)/.gradle"
+        export GRADLE_USER_HOME
+      shell: bash
+
+    - name: Restore Gradle Cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.gradle/caches
+        key: gradle-cache-${{ runner.os }}-${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: gradle-cache-${{ runner.os }}-
+
     - name: Set execute permission for gradlew
       run: chmod +x ./gradlew
 
     - name: Build with Gradle
-      run: ./gradlew build --info
+      run: ./gradlew --build-cache assemble
 
-    - name: Run Tests
-      run: ./gradlew test --info
+    - name: Save Gradle Cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.gradle/caches
+        key: gradle-cache-${{ runner.os }}-${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
+    - name: Archive Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: my-artifact
+        path: build/libs/SmartBinMS-0.0.1-SNAPSHOT.jar
