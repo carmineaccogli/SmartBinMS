@@ -29,7 +29,7 @@ jobs:
     - name: Restore Gradle Cache
       uses: actions/cache@v3
       with:
-        path: ~/.gradle/caches
+        path: ~/.gradle/wrapper
         key: cache-${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: cache-${{ github.ref }}
 
