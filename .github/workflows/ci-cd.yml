@@ -34,7 +34,7 @@ jobs:
         restore-keys: cache-${{ github.ref }}
 
     - name: Build with Gradle
-      run: ./gradlew --build assemble
+      run: ./gradlew build assemble
 
     - name: Save Gradle Cache
       uses: actions/cache@v3
