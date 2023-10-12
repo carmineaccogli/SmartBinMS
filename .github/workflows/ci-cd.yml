@@ -23,15 +23,15 @@ jobs:
         export GRADLE_USER_HOME
       shell: bash
 
+    - name: Set execute permission for gradlew
+      run: chmod +x ./gradlew
+
     - name: Restore Gradle Cache
       uses: actions/cache@v3
       with:
         path: ~/.gradle/caches
-        key: ${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: ${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-
-    - name: Set execute permission for gradlew
-      run: chmod +x ./gradlew
+        key: cache-${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: cache-${{ github.ref }}
 
     - name: Build with Gradle
       run: ./gradlew --build-cache assemble
@@ -40,7 +40,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.gradle/caches
-        key: ${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        key: cache-${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
 
     - name: Archive Artifact
       uses: actions/upload-artifact@v3
