@@ -24,7 +24,7 @@ jobs:
       with:
         path: ~/.gradle/caches
         key: gradle-cache-${{ runner.os }}-${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: gradle-cache-${{ runner.os }}-
+        restore-keys: gradle-cache-${{ runner.os }}-${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
     - name: Set execute permission for gradlew
       run: chmod +x ./gradlew
