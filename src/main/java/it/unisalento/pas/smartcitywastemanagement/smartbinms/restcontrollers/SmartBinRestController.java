@@ -166,7 +166,7 @@ public class SmartBinRestController {
         return ResponseEntity.ok(filteredBins);
     }
 
-    @RequestMapping(value = "/hello-world", method = RequestMethod.GET)
+    @RequestMapping(value = "/helloWorld", method = RequestMethod.GET)
     public ResponseEntity<String> getHelloCICD() {
         return ResponseEntity.ok("Hello world, CI-CD");
     }
