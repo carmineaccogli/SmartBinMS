@@ -3,6 +3,10 @@ name: CI
 on:
   push:
 
+env:
+  AWS_PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}   
+  AWS_SMARTBIN_IP: ${{ secrets.AWS_SMARTBIN_IP}}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,8 +27,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.gradle/caches
-        key: gradle-cache-${{ runner.os }}-${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: gradle-cache-${{ runner.os }}-${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        key: ${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: ${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
     - name: Set execute permission for gradlew
       run: chmod +x ./gradlew
@@ -36,7 +40,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.gradle/caches
-        key: gradle-cache-${{ runner.os }}-${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        key: ${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
     - name: Archive Artifact
       uses: actions/upload-artifact@v3
