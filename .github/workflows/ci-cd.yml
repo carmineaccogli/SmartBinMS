@@ -3,10 +3,6 @@ name: CI
 on:
   push:
 
-env:
-  AWS_PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}   
-  AWS_SMARTBIN_IP: ${{ secrets.AWS_SMARTBIN_IP}}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,24 +19,12 @@ jobs:
         export GRADLE_USER_HOME
       shell: bash
 
+
     - name: Set execute permission for gradlew
       run: chmod +x ./gradlew
 
-    - name: Restore Gradle Cache
-      uses: actions/cache@v3
-      with:
-        path: ~/.gradle/wrapper
-        key: cache-${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: cache-${{ github.ref }}
-
     - name: Build with Gradle
-      run: ./gradlew build assemble
-
-    - name: Save Gradle Cache
-      uses: actions/cache@v3
-      with:
-        path: ~/.gradle/caches
-        key: cache-${{ github.ref }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+      run: ./gradlew --build-cache assemble
 
 
     - name: Archive Artifact
