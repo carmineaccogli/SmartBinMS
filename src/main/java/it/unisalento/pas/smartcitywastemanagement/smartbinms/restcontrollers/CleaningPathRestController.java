@@ -15,9 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin
@@ -31,6 +34,7 @@ public class CleaningPathRestController {
     @Autowired
     private CleaningPathMapper cleaningPathMapper;
 
+    @PreAuthorize("hasRole('ROLE_WasteManagementCompany')")
     @RequestMapping(value="/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO> addNewCleaningPath(@Valid @RequestBody CleaningPathDTO cleaningPathDTO)  {
 
@@ -43,6 +47,7 @@ public class CleaningPathRestController {
         );
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','SmartBinNode','ROLE_Admin')")
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public ResponseEntity<List<CleaningPathDTO>> getCleaningPathByStatus(@RequestParam("done") boolean done) {
 
@@ -57,7 +62,23 @@ public class CleaningPathRestController {
         return ResponseEntity.ok(all_paths);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','SmartBinNode','ROLE_Admin')")
+    @RequestMapping(value = "/fromToday", method = RequestMethod.GET)
+    public ResponseEntity<List<CleaningPathDTO>> getCleaningPathToDoFromToday() throws ParseException {
 
+        List<CleaningPath> results = cleaningPathService.getCleaningPathToDoFrom(new Date());
+
+        List<CleaningPathDTO> all_paths = fromCleaningPathToDTOArray(results);
+
+        if (all_paths.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(all_paths);
+    }
+
+
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','SmartBinNode')")
     @RequestMapping(value ="/{cleaningPathID}", method = RequestMethod.PATCH)
     public ResponseEntity<?> updateStatusCleaningPath(@PathVariable("cleaningPathID") String cleaningPathID) throws CleaningPathNotFoundException {
 

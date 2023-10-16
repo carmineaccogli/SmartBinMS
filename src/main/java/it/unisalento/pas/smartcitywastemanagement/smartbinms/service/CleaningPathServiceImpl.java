@@ -8,6 +8,9 @@ import it.unisalento.pas.smartcitywastemanagement.smartbinms.repositories.Cleani
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,5 +49,11 @@ public class CleaningPathServiceImpl implements CleaningPathService {
         pathRequested.setDone(true);
 
         cleaningPathRepository.save(pathRequested);
+    }
+
+    public List<CleaningPath> getCleaningPathToDoFrom(Date date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = sdf.parse(sdf.format(date));
+        return cleaningPathRepository.findByScheduledDateGreaterThanEqualOrderByScheduledDate(startDate);
     }
 }
