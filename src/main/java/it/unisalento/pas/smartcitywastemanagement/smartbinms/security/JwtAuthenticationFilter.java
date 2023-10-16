@@ -36,14 +36,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // poi ci prendiamo il valore di questo header, che è: Bearer <spazio> TOKEN
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            System.out.println("SONO NELL'IF");
+
             jwtToken = authorizationHeader.substring(7); // mi prendo il token (dal 7o carattere in poi)
         }
 
 
         if (jwtToken != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-        System.out.println(jwtToken);
+
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(JWT_SECRET)
                     .build()
@@ -56,9 +56,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             List<String> audience = claims.get("aud", List.class);
             if (audience != null && audience.contains(THIS_MICROSERVICE)) {
                 String username = jwtUtilities.extractUsername(jwtToken);
-                System.out.println(username);
+
                 String role = claims.get("role", String.class);
-                System.out.println(role);
+
 
                 UserDetails userDetails = User.builder()
                         .username(username)
@@ -71,7 +71,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                System.out.println(userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
 

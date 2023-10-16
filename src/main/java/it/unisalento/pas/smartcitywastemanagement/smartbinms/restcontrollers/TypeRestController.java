@@ -14,6 +14,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class TypeRestController {
         @Autowired
         private TypeService typeService;
 
+        @PreAuthorize("hasRole('ROLE_WasteManagementCompany')")
         @RequestMapping(value="/add", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
         public ResponseEntity<ResponseDTO> addNewType(@Valid @RequestBody TypeDTO typeDTO) throws DuplicateKeyException {
 
@@ -42,6 +44,7 @@ public class TypeRestController {
                     HttpStatus.CREATED);
         }
 
+        @PreAuthorize("hasAnyRole('MunicipalOffice','WasteManagementCompany','Citizen')")
         @RequestMapping(value="/", method=RequestMethod.GET)
         public ResponseEntity<List<TypeDTO>> getAll_Type() {
 

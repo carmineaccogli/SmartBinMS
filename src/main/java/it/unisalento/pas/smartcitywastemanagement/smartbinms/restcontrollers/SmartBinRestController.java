@@ -15,6 +15,7 @@ import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +42,7 @@ public class SmartBinRestController {
     API PER TROVARE SMARTBIN
     -----*/
 
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_Admin','ROLE_MunicipalOffice')")
     @RequestMapping(value="/", method=RequestMethod.GET)
     public ResponseEntity<List<SmartBinDTO>> getAllBins() {
 
@@ -64,7 +66,7 @@ public class SmartBinRestController {
         return ResponseEntity.ok(allBins);
     }
 
-
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','SmartBinNode','ROLE_Admin','ROLE_MunicipalOffice')")
     @RequestMapping(value="/{smartBinID}", method=RequestMethod.GET)
     public SmartBinDTO getSmartBin(@PathVariable String smartBinID) throws SmartBinNotFoundException{
         SmartBin bin = manageSmartBinsService.getSmartBinByID(smartBinID);
@@ -86,6 +88,7 @@ public class SmartBinRestController {
         return ResponseEntity.noContent().build();
     }*/
 
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_Admin')")
     @RequestMapping(value="/{smartBinID}/capacityThreshold", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateCapacityThreshold(@PathVariable("smartBinID") String smartBinID, @RequestBody @Valid CapacityThresholdRequestDTO capacityThresholdRequestDTO) throws SmartBinNotFoundException {
 
@@ -94,6 +97,7 @@ public class SmartBinRestController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_SmartBinNode','ROLE_Admin')")
     @RequestMapping(value="{smartBinID}/reset", method=RequestMethod.POST)
     public ResponseEntity<?> resetSmartBinCapacity(@PathVariable("smartBinID") String smartBinID) throws SmartBinNotFoundException {
         manageSmartBinsService.resetCapacity(smartBinID);
@@ -104,6 +108,7 @@ public class SmartBinRestController {
     API PER FILTRARE SMARTBIN
     -----*/
 
+    @PreAuthorize("hasAnyRole('MunicipalOffice','WasteManagementCompany','SmartBinNode','ROLE_Admin')")
     @RequestMapping(value="/state",method = RequestMethod.GET)
     public ResponseEntity<List<SmartBinDTO>> getSmartBinByState(@RequestParam("state") String state) throws SmartBinStateInvalidException {
 
@@ -124,6 +129,7 @@ public class SmartBinRestController {
         return ResponseEntity.ok(filteredBins);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_Admin',ROLE_MunicipalOffice)")
     @RequestMapping(value="/type",method = RequestMethod.GET)
     public ResponseEntity<List<SmartBinDTO>> getSmartBinByType(@RequestParam("type") String type) throws SmartBinTypeNotFoundException {
 
@@ -145,7 +151,7 @@ public class SmartBinRestController {
     }
 
 
-
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_Admin')")
     @RequestMapping(value="/binsAboveThreshold", method=RequestMethod.GET)
     public ResponseEntity<List<SmartBinDTO>> getBinsAboveThreshold(@RequestParam(value = "capacityRatio") @Min(0) @Max(1) double capacityRatio) {
 
@@ -166,10 +172,6 @@ public class SmartBinRestController {
         return ResponseEntity.ok(filteredBins);
     }
 
-    @RequestMapping(value = "/helloWorld", method = RequestMethod.GET)
-    public ResponseEntity<String> getHelloCICD() {
-        return ResponseEntity.ok("Hello world, CI-CD");
-    }
 
 
 

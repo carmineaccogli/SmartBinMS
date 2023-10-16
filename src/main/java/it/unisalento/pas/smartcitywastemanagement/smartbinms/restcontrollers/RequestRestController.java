@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,7 @@ public class RequestRestController {
     API PER SALVATAGGIO RICHIESTE
      ----- */
 
+    @PreAuthorize("hasRole('ROLE_MunicipalOffice')")
     @RequestMapping(value="/allocation", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO> sendAllocationRequest(@Valid @RequestBody AllocationRequestSendDTO allocationRequestSendDTO) throws RequestAlreadyExistsException, SmartBinTypeNotFoundException, InvalidPositionException {
 
@@ -64,7 +66,7 @@ public class RequestRestController {
                 HttpStatus.CREATED);
     }
 
-
+    @PreAuthorize("hasRole('ROLE_MunicipalOffice')")
     @RequestMapping(value="/removal", method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO> sendRemovalRequest(@RequestBody @Valid RemovalRequestSendDTO removalRequestSendDTO) throws SmartBinNotFoundException, RequestAlreadyExistsException {
 
@@ -83,7 +85,7 @@ public class RequestRestController {
     /* -----
     API PER GESTIONE RICHIESTE DI ALLOCAZIONE
      ----- */
-
+    @PreAuthorize("hasRole('ROLE_WasteManagementCompany')")
     @RequestMapping(value="/allocation/approve/{requestID}", method=RequestMethod.POST)
     public ResponseEntity<?> approveAllocation(@PathVariable String requestID) throws RequestNotFoundException,SmartBinAlreadyAllocatedException, RequestAlreadyConfirmedException {
 
@@ -92,6 +94,7 @@ public class RequestRestController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ROLE_WasteManagementCompany')")
     @RequestMapping(value="/allocation/disapprove/{requestID}", method=RequestMethod.POST)
     public ResponseEntity<?> disapproveAllocation(@PathVariable String requestID) throws RequestNotFoundException, RequestAlreadyConfirmedException {
 
@@ -104,12 +107,14 @@ public class RequestRestController {
     API PER GESTIONE RICHIESTE DI RIMOZIONE
      ----- */
 
+    @PreAuthorize("hasRole('ROLE_WasteManagementCompany')")
     @RequestMapping(value="/removal/approve/{requestID}", method=RequestMethod.POST)
     public ResponseEntity<?> approveRemoval(@PathVariable String requestID) throws RequestNotFoundException, SmartBinNotFoundException, RequestAlreadyConfirmedException, SmartBinAlreadyRemovedException{
         removalRequestService.manageRemovalRequest(requestID, "Approve");
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ROLE_WasteManagementCompany')")
     @RequestMapping(value="/removal/disapprove/{requestID}", method=RequestMethod.POST)
     public ResponseEntity<?> disapproveRemoval(@PathVariable String requestID) throws RequestNotFoundException,SmartBinNotFoundException,RequestAlreadyConfirmedException, SmartBinAlreadyRemovedException{
         removalRequestService.manageRemovalRequest(requestID, "Disapprove");
@@ -121,6 +126,7 @@ public class RequestRestController {
     API PER TROVARE TUTTE LE RICHIESTE PRESENTI
      ----- */
 
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_MunicipalOffice')")
     @RequestMapping(value="/allocation/", method = RequestMethod.GET)
     public ResponseEntity<List<AllocationRequestViewDTO>> getAll_AllocationRequest() throws IOException {
         List<AllocationRequest> results = allocationRequestService.getAllRequests();
@@ -135,6 +141,7 @@ public class RequestRestController {
         return ResponseEntity.ok(all_requests);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_MunicipalOffice')")
     @RequestMapping(value="/removal/", method = RequestMethod.GET)
     public ResponseEntity<List<RemovalRequestViewDTO>> getAll_RemovalRequest() {
         List<RemovalRequest> results = removalRequestService.getAllRequests();
@@ -154,6 +161,7 @@ public class RequestRestController {
     API PER FILTRARE PER STATO LE RICHIESTE PRESENTI
      ----- */
 
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_MunicipalOffice')")
     @RequestMapping(value="/allocation", method = RequestMethod.GET)
     public ResponseEntity<List<AllocationRequestViewDTO>> getAllocationRequestByStatus(@RequestParam("status") String status) throws RequestInvalidStatusException {
 
@@ -169,6 +177,7 @@ public class RequestRestController {
 
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_MunicipalOffice')")
     @RequestMapping(value="/removal", method = RequestMethod.GET)
     public ResponseEntity<List<RemovalRequestViewDTO>> getRemovalRequestByStatus(@RequestParam("status") String status) throws RequestInvalidStatusException {
 
@@ -189,6 +198,7 @@ public class RequestRestController {
     API PER TROVARE UNA SPECIFICA RICHIESTA
      ----- */
 
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_MunicipalOffice')")
     @RequestMapping(value="/allocation/{requestID}", method=RequestMethod.GET)
     public AllocationRequestViewDTO getAllocationRequest(@PathVariable String requestID) throws RequestNotFoundException{
         AllocationRequest request = allocationRequestService.getRequestByID(requestID);
@@ -198,6 +208,7 @@ public class RequestRestController {
         return result;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_MunicipalOffice')")
     @RequestMapping(value="/removal/{requestID}", method=RequestMethod.GET)
     public RemovalRequestViewDTO getRemovalRequest(@PathVariable String requestID) throws RequestNotFoundException{
 
