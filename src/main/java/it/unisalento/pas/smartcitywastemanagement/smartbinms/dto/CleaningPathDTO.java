@@ -16,8 +16,8 @@ public class CleaningPathDTO {
     @Size(min = 1, message = "{Size.CleaningPath.smartBinIDPath}")
     private List<String> smartBinIDPath;
 
-    @NotNull(message = "{NotNull.CleaningPath.timestamp}")
-    private Date timestamp;
+    @NotNull(message = "{NotNull.CleaningPath.scheduledDate}")
+    private Date scheduledDate;
 
     public boolean isDone() {
         return done;
@@ -35,12 +35,12 @@ public class CleaningPathDTO {
         this.smartBinIDPath = smartBinIDPath;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    public Date getScheduledDate() {
+        return scheduledDate;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+    public void setScheduledDate(Date scheduledDate) {
+        this.scheduledDate = scheduledDate;
     }
 
     public String getId() {

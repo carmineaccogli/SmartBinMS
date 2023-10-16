@@ -17,7 +17,7 @@ public class CleaningPath {
 
     private List<String> smartBinIDs;
 
-    private Date timestamp;
+    private Date scheduledDate;
 
 
     public boolean isDone() {
@@ -36,12 +36,12 @@ public class CleaningPath {
         this.smartBinIDs = smartBinIDs;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    public Date getScheduledDate() {
+        return scheduledDate;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+    public void setScheduledDate(Date scheduledDate) {
+        this.scheduledDate = scheduledDate;
     }
 
     public String getId() {

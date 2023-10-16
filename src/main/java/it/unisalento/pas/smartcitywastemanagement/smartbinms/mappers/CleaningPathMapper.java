@@ -11,7 +11,7 @@ public class CleaningPathMapper {
 
         CleaningPath cleaningPath = new CleaningPath();
 
-        cleaningPath.setTimestamp(cleaningPathDTO.getTimestamp());
+        cleaningPath.setScheduledDate(cleaningPathDTO.getScheduledDate());
         cleaningPath.setSmartBinIDs(cleaningPathDTO.getSmartBinIDPath());
         return cleaningPath;
     }
@@ -22,7 +22,7 @@ public class CleaningPathMapper {
 
         cleaningPathDTO.setId(cleaningPath.getId());
         cleaningPathDTO.setSmartBinIDPath(cleaningPath.getSmartBinIDs());
-        cleaningPathDTO.setTimestamp(cleaningPath.getTimestamp());
+        cleaningPathDTO.setScheduledDate(cleaningPath.getScheduledDate());
         cleaningPathDTO.setDone(cleaningPath.isDone());
 
         return cleaningPathDTO;
