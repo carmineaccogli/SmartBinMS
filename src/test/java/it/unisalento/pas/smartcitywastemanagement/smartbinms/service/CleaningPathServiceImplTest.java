@@ -12,6 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -102,6 +104,34 @@ public class CleaningPathServiceImplTest {
         verify(cleaningPathRepository, times(1)).findById("InvalidPathID");
         verify(cleaningPathRepository, never()).save(any(CleaningPath.class));
 
+    }
+
+    @Test
+    public void testGetCleaningPathToDoFrom() throws ParseException {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        Date date = sdf.parse("2023/10/16");
+        Date startDate1 = sdf.parse("2023/10/17");
+        Date startDate2 = sdf.parse("2023/10/18");
+
+        List<CleaningPath> mockCleaningPaths = new ArrayList<>();
+        CleaningPath path1 = new CleaningPath();
+        path1.setId("1");
+        path1.setScheduledDate(startDate1);
+
+        CleaningPath path2 = new CleaningPath();
+        path2.setId("2");
+        path2.setScheduledDate(startDate2);
+
+
+        when(cleaningPathRepository.findByScheduledDateGreaterThanEqualOrderByScheduledDate(any(Date.class)))
+                .thenReturn(mockCleaningPaths);
+
+        List<CleaningPath> result = cleaningPathService.getCleaningPathToDoFrom(sdf.format(date));
+
+        assertEquals(mockCleaningPaths, result);
+
+        verify(cleaningPathRepository, times(1)).findByScheduledDateGreaterThanEqualOrderByScheduledDate(date);
     }
 
 

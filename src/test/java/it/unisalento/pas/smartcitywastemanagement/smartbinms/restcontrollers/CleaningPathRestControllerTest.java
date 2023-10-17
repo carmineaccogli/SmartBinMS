@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,11 +54,11 @@ public class CleaningPathRestControllerTest {
     public void testAddNewCleaningPath() throws Exception {
 
         CleaningPathDTO cleaningPathDTO = new CleaningPathDTO();
-        cleaningPathDTO.setTimestamp(new Date());
+        cleaningPathDTO.setScheduledDate(new Date());
         cleaningPathDTO.setSmartBinIDPath(List.of("1","2"));
 
         CleaningPath cleaningPath = new CleaningPath();
-        cleaningPath.setTimestamp(cleaningPathDTO.getTimestamp());
+        cleaningPath.setScheduledDate(cleaningPathDTO.getScheduledDate());
         cleaningPath.setSmartBinIDs(cleaningPathDTO.getSmartBinIDPath());
 
         String jsonRequest = objectMapper.writeValueAsString(cleaningPathDTO);
@@ -143,6 +144,57 @@ public class CleaningPathRestControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/cleaningPath/"+cleaningPathID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    public void testGetCleaningPathToDoFromStartDate() throws Exception {
+
+        Date startDate1 = new Date();
+        Date startDate2 = new Date(startDate1.getTime() + (1000 * 60 * 60 * 24));
+
+        List<CleaningPath> mockPaths = new ArrayList<>();
+
+        CleaningPath path1 = new CleaningPath();
+        path1.setId("1");
+        path1.setScheduledDate(startDate1);
+
+        CleaningPath path2 = new CleaningPath();
+        path2.setId("2");
+        path2.setScheduledDate(startDate2);
+
+
+        mockPaths.add(path1);
+        mockPaths.add(path2);
+
+
+        List<CleaningPathDTO> mockPathsDTO = new ArrayList<>();
+
+        CleaningPathDTO pathDTO1 = new CleaningPathDTO();
+        pathDTO1.setId(path1.getId());
+        pathDTO1.setScheduledDate(path1.getScheduledDate());
+
+        CleaningPathDTO pathDTO2 = new CleaningPathDTO();
+        pathDTO2.setId(path2.getId());
+        pathDTO2.setScheduledDate(path2.getScheduledDate());
+
+        mockPathsDTO.add(pathDTO1);
+        mockPathsDTO.add(pathDTO2);
+
+
+        when(cleaningPathService.getCleaningPathToDoFrom(any(String.class))).thenReturn(mockPaths);
+        when(cleaningPathMapper.toCleaningPathDTO(path1)).thenReturn(pathDTO1);
+        when(cleaningPathMapper.toCleaningPathDTO(path2)).thenReturn(pathDTO2);
+
+        System.out.println(pathDTO1.getScheduledDate());
+        System.out.println(pathDTO2.getScheduledDate());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/cleaningPath/date")
+                        .param("from","2023/10/15"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[0].id").value(mockPathsDTO.get(0).getId()))
+                .andExpect(jsonPath("$.[1].id").value(mockPathsDTO.get(1).getId()));
     }
 }
 

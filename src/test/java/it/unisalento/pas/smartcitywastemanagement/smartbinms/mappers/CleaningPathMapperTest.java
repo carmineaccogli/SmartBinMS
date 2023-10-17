@@ -34,12 +34,12 @@ public class CleaningPathMapperTest {
 
         CleaningPathDTO cleaningPathDTO = new CleaningPathDTO();
         cleaningPathDTO.setSmartBinIDPath(path);
-        cleaningPathDTO.setTimestamp(new Date());
+        cleaningPathDTO.setScheduledDate(new Date());
 
         CleaningPath result = cleaningPathMapper.toCleaningPath(cleaningPathDTO);
 
         assertEquals(cleaningPathDTO.getSmartBinIDPath(),result.getSmartBinIDs());
-        assertEquals(cleaningPathDTO.getTimestamp(),result.getTimestamp());
+        assertEquals(cleaningPathDTO.getScheduledDate(),result.getScheduledDate());
     }
 
     @Test
@@ -52,7 +52,7 @@ public class CleaningPathMapperTest {
         CleaningPath cleaningPath = new CleaningPath();
         cleaningPath.setDone(false);
         cleaningPath.setSmartBinIDs(path);
-        cleaningPath.setTimestamp(new Date());
+        cleaningPath.setScheduledDate(new Date());
         cleaningPath.setId("TestID");
 
         CleaningPathDTO result = cleaningPathMapper.toCleaningPathDTO(cleaningPath);
@@ -60,7 +60,7 @@ public class CleaningPathMapperTest {
         assertEquals(cleaningPath.getSmartBinIDs(),result.getSmartBinIDPath());
         assertEquals(cleaningPath.isDone(),result.isDone());
         assertEquals(cleaningPath.getId(),result.getId());
-        assertEquals(cleaningPath.getTimestamp(),result.getTimestamp());
+        assertEquals(cleaningPath.getScheduledDate(),result.getScheduledDate());
 
     }
 }
