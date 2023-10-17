@@ -12,6 +12,7 @@ import it.unisalento.pas.smartcitywastemanagement.smartbinms.mappers.CleaningPat
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.service.CleaningPathService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -63,10 +64,10 @@ public class CleaningPathRestController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','SmartBinNode','ROLE_Admin')")
-    @RequestMapping(value = "/fromToday", method = RequestMethod.GET)
-    public ResponseEntity<List<CleaningPathDTO>> getCleaningPathToDoFromToday() throws ParseException {
+    @RequestMapping(value = "/date", method = RequestMethod.GET)
+    public ResponseEntity<List<CleaningPathDTO>> getCleaningPathToDoFromStartDate(@RequestParam("from") String startDate) throws ParseException {
 
-        List<CleaningPath> results = cleaningPathService.getCleaningPathToDoFrom(new Date());
+        List<CleaningPath> results = cleaningPathService.getCleaningPathToDoFrom(startDate);
 
         List<CleaningPathDTO> all_paths = fromCleaningPathToDTOArray(results);
 

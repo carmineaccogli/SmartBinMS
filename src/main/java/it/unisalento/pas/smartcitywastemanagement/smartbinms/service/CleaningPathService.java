@@ -16,5 +16,5 @@ public interface CleaningPathService {
 
     void updateCleaningPathStatus(String cleaningPathID) throws CleaningPathNotFoundException;
 
-    List<CleaningPath> getCleaningPathToDoFrom(Date date) throws ParseException;
+    List<CleaningPath> getCleaningPathToDoFrom(String startDate) throws ParseException;
 }

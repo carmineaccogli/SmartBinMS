@@ -51,9 +51,9 @@ public class CleaningPathServiceImpl implements CleaningPathService {
         cleaningPathRepository.save(pathRequested);
     }
 
-    public List<CleaningPath> getCleaningPathToDoFrom(Date date) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = sdf.parse(sdf.format(date));
+    public List<CleaningPath> getCleaningPathToDoFrom(String startDateStr) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        Date startDate = sdf.parse(startDateStr);
         return cleaningPathRepository.findByScheduledDateGreaterThanEqualOrderByScheduledDate(startDate);
     }
 }
