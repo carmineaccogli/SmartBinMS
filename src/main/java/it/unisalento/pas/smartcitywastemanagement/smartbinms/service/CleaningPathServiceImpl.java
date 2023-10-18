@@ -52,7 +52,7 @@ public class CleaningPathServiceImpl implements CleaningPathService {
     }
 
     public List<CleaningPath> getCleaningPathToDoFrom(String startDateStr) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date startDate = sdf.parse(startDateStr);
         return cleaningPathRepository.findByScheduledDateGreaterThanEqualOrderByScheduledDate(startDate);
     }
