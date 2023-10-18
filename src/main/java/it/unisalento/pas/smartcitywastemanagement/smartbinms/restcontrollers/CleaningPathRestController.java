@@ -48,7 +48,7 @@ public class CleaningPathRestController {
         );
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','SmartBinNode','ROLE_Admin')")
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_SmartBinNode','ROLE_Admin')")
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public ResponseEntity<List<CleaningPathDTO>> getCleaningPathByStatus(@RequestParam("done") boolean done) {
 
@@ -79,7 +79,7 @@ public class CleaningPathRestController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','SmartBinNode')")
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_SmartBinNode')")
     @RequestMapping(value ="/{cleaningPathID}", method = RequestMethod.PATCH)
     public ResponseEntity<?> updateStatusCleaningPath(@PathVariable("cleaningPathID") String cleaningPathID) throws CleaningPathNotFoundException {
 
