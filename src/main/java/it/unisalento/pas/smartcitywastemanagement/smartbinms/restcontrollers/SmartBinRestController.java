@@ -66,7 +66,7 @@ public class SmartBinRestController {
         return ResponseEntity.ok(allBins);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','SmartBinNode','ROLE_Admin','ROLE_MunicipalOffice')")
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_SmartBinNode','ROLE_Admin','ROLE_MunicipalOffice')")
     @RequestMapping(value="/{smartBinID}", method=RequestMethod.GET)
     public SmartBinDTO getSmartBin(@PathVariable String smartBinID) throws SmartBinNotFoundException{
         SmartBin bin = manageSmartBinsService.getSmartBinByID(smartBinID);
@@ -108,7 +108,7 @@ public class SmartBinRestController {
     API PER FILTRARE SMARTBIN
     -----*/
 
-    @PreAuthorize("hasAnyRole('MunicipalOffice','WasteManagementCompany','SmartBinNode','ROLE_Admin')")
+    @PreAuthorize("hasAnyRole('ROLE_MunicipalOffice','ROLE_WasteManagementCompany','ROLE_SmartBinNode','ROLE_Admin')")
     @RequestMapping(value="/state",method = RequestMethod.GET)
     public ResponseEntity<List<SmartBinDTO>> getSmartBinByState(@RequestParam("state") String state) throws SmartBinStateInvalidException {
 
@@ -129,7 +129,7 @@ public class SmartBinRestController {
         return ResponseEntity.ok(filteredBins);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_Admin',ROLE_MunicipalOffice)")
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany','ROLE_Admin','ROLE_MunicipalOffice')")
     @RequestMapping(value="/type",method = RequestMethod.GET)
     public ResponseEntity<List<SmartBinDTO>> getSmartBinByType(@RequestParam("type") String type) throws SmartBinTypeNotFoundException {
 
