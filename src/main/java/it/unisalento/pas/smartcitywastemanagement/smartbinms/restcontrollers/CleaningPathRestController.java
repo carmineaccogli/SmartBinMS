@@ -8,6 +8,7 @@ import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.CleaningPathDTO
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.RemovalRequestViewDTO;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.ResponseDTO;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.exceptions.CleaningPathNotFoundException;
+import it.unisalento.pas.smartcitywastemanagement.smartbinms.exceptions.InvalidScheduledDateException;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.mappers.CleaningPathMapper;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.service.CleaningPathService;
 import jakarta.validation.Valid;
@@ -37,7 +38,7 @@ public class CleaningPathRestController {
 
     @PreAuthorize("hasRole('ROLE_WasteManagementCompany')")
     @RequestMapping(value="/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDTO> addNewCleaningPath(@Valid @RequestBody CleaningPathDTO cleaningPathDTO)  {
+    public ResponseEntity<ResponseDTO> addNewCleaningPath(@Valid @RequestBody CleaningPathDTO cleaningPathDTO) throws InvalidScheduledDateException {
 
         CleaningPath cleaningPath = cleaningPathMapper.toCleaningPath(cleaningPathDTO);
 

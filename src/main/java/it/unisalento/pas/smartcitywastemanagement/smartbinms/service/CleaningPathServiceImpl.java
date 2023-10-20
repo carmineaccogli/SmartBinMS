@@ -4,6 +4,7 @@ package it.unisalento.pas.smartcitywastemanagement.smartbinms.service;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.domain.CleaningPath;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.dto.CleaningPathDTO;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.exceptions.CleaningPathNotFoundException;
+import it.unisalento.pas.smartcitywastemanagement.smartbinms.exceptions.InvalidScheduledDateException;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.repositories.CleaningPathRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,12 @@ public class CleaningPathServiceImpl implements CleaningPathService {
     @Autowired
     private CleaningPathRepository cleaningPathRepository;
 
-    public String saveCleaningPath(CleaningPath cleaningPath) {
+    public String saveCleaningPath(CleaningPath cleaningPath) throws InvalidScheduledDateException{
+
+        // Check data: riferimento solo a data futura
+        Date now = new Date();
+        if(!cleaningPath.getScheduledDate().after(now))
+            throw new InvalidScheduledDateException();
 
         // Setting status completed a false
         cleaningPath.setDone(false);

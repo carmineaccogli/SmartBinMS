@@ -35,7 +35,7 @@ public class CleaningPathServiceImplTest {
 
 
     @Test
-    public void testSaveCleaningPath() {
+    public void testSaveCleaningPath() throws Exception{
 
         CleaningPath cleaningPath = new CleaningPath();
         cleaningPath.setId("TestID");
