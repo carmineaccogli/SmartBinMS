@@ -159,14 +159,14 @@ public class CustomExceptionHandler  {
                 ));
     }
 
-    @ExceptionHandler(SmartBinIsFullException.class)
-    public ResponseEntity<Object> smartBinIsFullHandler(SmartBinIsFullException ex) {
+    @ExceptionHandler(InvalidScheduledDateException.class)
+    public ResponseEntity<Object> invalidScheduledDateHandler(InvalidScheduledDateException ex) {
 
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ExceptionDTO(
                         20,
-                        SmartBinIsFullException.class.getSimpleName(),
-                        "Smart bin has reached maximum capacity. Cannot complete disposal."
+                        InvalidScheduledDateException.class.getSimpleName(),
+                        "Scheduled Date must be after today date and time."
                 ));
     }
 
