@@ -37,8 +37,13 @@ public class CleaningPathServiceImplTest {
     @Test
     public void testSaveCleaningPath() throws Exception{
 
+        Date now = new Date();
+        Date toSet = new Date(now.getTime() + (1000 * 60 * 60 * 24));
+
         CleaningPath cleaningPath = new CleaningPath();
         cleaningPath.setId("TestID");
+        cleaningPath.setScheduledDate(toSet);
+
 
         when(cleaningPathRepository.save(cleaningPath)).thenReturn(cleaningPath);
 
@@ -109,10 +114,10 @@ public class CleaningPathServiceImplTest {
     @Test
     public void testGetCleaningPathToDoFrom() throws ParseException {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        Date date = sdf.parse("2023/10/16");
-        Date startDate1 = sdf.parse("2023/10/17");
-        Date startDate2 = sdf.parse("2023/10/18");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = sdf.parse("16/10/2023");
+        Date startDate1 = sdf.parse("17/10/2023");
+        Date startDate2 = sdf.parse("18/10/2023");
 
         List<CleaningPath> mockCleaningPaths = new ArrayList<>();
         CleaningPath path1 = new CleaningPath();

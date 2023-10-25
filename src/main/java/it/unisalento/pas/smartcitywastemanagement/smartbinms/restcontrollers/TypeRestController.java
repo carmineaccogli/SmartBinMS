@@ -29,9 +29,6 @@ public class TypeRestController {
         private TypeMapper typeMapper;
 
         @Autowired
-        private TypeRepository typeRepository;
-
-        @Autowired
         private TypeService typeService;
 
         @PreAuthorize("hasRole('ROLE_WasteManagementCompany')")
