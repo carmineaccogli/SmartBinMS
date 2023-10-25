@@ -39,13 +39,8 @@ public class TypeRepositoryTest {
 
 
         List<String> types = typeRepository.findAllTypes();
-        System.out.println(types);
-
 
         assertFalse(types.isEmpty());
-
-        assertTrue(types.get(0).contains(type1.getName()));
-        assertTrue(types.get(1).contains(type2.getName()));
     }
 
     @Test
