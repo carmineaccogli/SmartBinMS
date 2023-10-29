@@ -49,7 +49,7 @@ jobs:
       run: chmod +x ./gradlew
 
     - name: Build dependencies
-      run: ./gradlew buildDependents
+      run: ./gradlew testClasses
 
     - name: Run Gradle Tests
       run: ./gradlew test
