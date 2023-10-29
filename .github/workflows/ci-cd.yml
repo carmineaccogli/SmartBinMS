@@ -16,6 +16,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+      
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v3
 
     - name: Set up GRADLE_USER_HOME
       run: |
@@ -34,9 +37,28 @@ jobs:
       with:
         name: SmartBinMSBootjar
         path: build/libs/SmartBinMS-0.0.1-SNAPSHOT.jar
+  
 
 
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: gradle:latest
 
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Run Gradle Tests
+      run: ./gradlew test
+
+    - name: Upload JUnit Test Reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: junit-test-reports
+        path: build/reports/tests/test/index.html
+        
   deploy:
     needs: build
     runs-on: ubuntu-latest
