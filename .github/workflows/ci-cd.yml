@@ -20,12 +20,6 @@ jobs:
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
 
-    - name: Set up GRADLE_USER_HOME
-      run: |
-        GRADLE_USER_HOME="$(pwd)/.gradle"
-        export GRADLE_USER_HOME
-      shell: bash
-
     - name: Set execute permission for gradlew
       run: chmod +x ./gradlew
 
@@ -49,12 +43,15 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+      
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
 
     - name: Set execute permission for gradlew
       run: chmod +x ./gradlew
 
     - name: Run Gradle Tests
-      run: ./gradlew --build-cache test
+      run: ./gradlew test
 
     - name: Upload JUnit Test Reports
       uses: actions/upload-artifact@v3
