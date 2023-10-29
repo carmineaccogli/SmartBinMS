@@ -54,7 +54,7 @@ jobs:
       run: chmod +x ./gradlew
 
     - name: Run Gradle Tests
-      run: ./gradlew test
+      run: ./gradlew --build-cache test
 
     - name: Upload JUnit Test Reports
       uses: actions/upload-artifact@v3
@@ -63,7 +63,7 @@ jobs:
         path: build/reports/tests/test/index.html
         
   deploy:
-    needs: build
+    needs: [build, test]
     runs-on: ubuntu-latest
 
     steps:
