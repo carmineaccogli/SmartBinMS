@@ -32,8 +32,6 @@ jobs:
         name: SmartBinMSBootjar
         path: build/libs/SmartBinMS-0.0.1-SNAPSHOT.jar
   
-
-
   test:
     needs: build
     runs-on: ubuntu-latest
