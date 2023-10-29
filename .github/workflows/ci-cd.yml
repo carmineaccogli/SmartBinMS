@@ -30,7 +30,7 @@ jobs:
       run: chmod +x ./gradlew
 
     - name: Build with Gradle
-      run: ./gradlew --build-cache assemble
+      run: ./gradlew assemble
 
     - name: Archive Artifact
       uses: actions/upload-artifact@v3
@@ -49,6 +49,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
+    - name: Set execute permission for gradlew
+      run: chmod +x ./gradlew
 
     - name: Run Gradle Tests
       run: ./gradlew test
