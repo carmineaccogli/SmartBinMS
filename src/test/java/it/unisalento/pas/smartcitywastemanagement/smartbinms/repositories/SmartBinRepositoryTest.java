@@ -8,6 +8,7 @@ import org.bson.types.Decimal128;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataMongoTest
+@AutoConfigureDataMongo
 public class SmartBinRepositoryTest {
 
     @Autowired
