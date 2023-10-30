@@ -34,6 +34,24 @@ jobs:
       with:
         name: SmartBinMSBootjar
         path: build/libs/SmartBinMS-0.0.1-SNAPSHOT.jar
+
+    - name: Run Gradle Tests
+      run: ./gradlew test
+
+    - name: Upload JUnit Test Reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: junit-test-reports
+        path: build/reports/tests/test/index.html
+
+  cleanup:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Delete Artifact
+      run: |
+        rm -rf SmartBinMSBootjar
+      continue-on-error: true
   
 
         
