@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @DataMongoTest
-@AutoConfigureDataMongo
 public class CleaningPathRepositoryTest {
 
     @Autowired

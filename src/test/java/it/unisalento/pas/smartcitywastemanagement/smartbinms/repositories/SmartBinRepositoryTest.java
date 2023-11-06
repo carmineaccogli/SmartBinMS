@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataMongoTest
-@AutoConfigureDataMongo
 public class SmartBinRepositoryTest {
 
     @Autowired

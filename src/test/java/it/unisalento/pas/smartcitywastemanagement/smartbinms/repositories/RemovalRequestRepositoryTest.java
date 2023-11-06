@@ -17,7 +17,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataMongoTest
-@AutoConfigureDataMongo
 public class RemovalRequestRepositoryTest {
 
     @Autowired
