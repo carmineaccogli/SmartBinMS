@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
@@ -16,7 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  *      - descrizione eccezione
  */
 @ControllerAdvice
-public class CustomExceptionHandler  {
+public class CustomExceptionHandler {
 
     @ExceptionHandler(RequestNotFoundException.class)
     public ResponseEntity<Object> requestNotFoundHandler(RequestNotFoundException ex) {
@@ -168,6 +169,13 @@ public class CustomExceptionHandler  {
                         InvalidScheduledDateException.class.getSimpleName(),
                         "Scheduled Date must be after today date and time."
                 ));
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<Object> noHandlerFoundHandler(NoHandlerFoundException ex) {
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ex.getBody());
     }
 
 

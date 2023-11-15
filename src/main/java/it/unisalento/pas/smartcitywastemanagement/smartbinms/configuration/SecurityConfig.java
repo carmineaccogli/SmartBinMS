@@ -1,5 +1,6 @@
 package it.unisalento.pas.smartcitywastemanagement.smartbinms.configuration;
 
+import it.unisalento.pas.smartcitywastemanagement.smartbinms.security.AccessDeniedHandlerJwt;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.security.JwtAuthenticationEntryPoint;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Arrays;
 
 @Configuration
 @EnableMethodSecurity
+@EnableWebMvc
 public class SecurityConfig {
 
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    @Autowired
+    private AccessDeniedHandlerJwt deniedHandlerEntryPoint;
 
 
 
@@ -32,7 +38,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests.anyRequest().authenticated())
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                .exceptionHandling(ex -> ex.accessDeniedHandler(deniedHandlerEntryPoint))
+                //.exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(sessionManagement ->
                         sessionManagement
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
