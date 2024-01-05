@@ -1,6 +1,8 @@
 package it.unisalento.pas.smartcitywastemanagement.smartbinms.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import it.unisalento.pas.smartcitywastemanagement.smartbinms.utility.GeoJsonDeserializer;
 import it.unisalento.pas.smartcitywastemanagement.smartbinms.validators.ValidGeoJSONPoint;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -18,6 +20,7 @@ public class AllocationRequestSendDTO {
     private String smartBinName;
 
 
+    @JsonDeserialize(using= GeoJsonDeserializer.class)
     @ValidGeoJSONPoint(message = "{ValidGeoJSONPoint.AllocationRequest.position}")
     private GeoJsonPoint position;
 
