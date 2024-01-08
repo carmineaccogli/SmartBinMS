@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface CleaningPathRepository extends MongoRepository<CleaningPath, String> {
 
 
-    List<CleaningPath> findByDone(boolean done);
+    List<CleaningPath> findByDoneOrderByScheduledDate(boolean done);
 
     Optional<CleaningPath> findById(String cleaningPathID);
 

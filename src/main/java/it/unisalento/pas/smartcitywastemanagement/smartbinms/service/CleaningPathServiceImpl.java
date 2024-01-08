@@ -39,7 +39,7 @@ public class CleaningPathServiceImpl implements CleaningPathService {
 
 
     public List<CleaningPath> getCleaningPathByStatus(boolean done) {
-        return cleaningPathRepository.findByDone(done);
+        return cleaningPathRepository.findByDoneOrderByScheduledDate(done);
     }
 
     public void updateCleaningPathStatus(String cleaningPathID) throws CleaningPathNotFoundException {
