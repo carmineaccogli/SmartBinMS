@@ -43,7 +43,7 @@ public class CleaningPathRepositoryTest {
     }
 
     @Test
-    public void testFindByDone() {
+    public void findByDoneOrderByScheduledDate() {
 
         CleaningPath path1 = new CleaningPath();
         path1.setId("1");
@@ -56,7 +56,7 @@ public class CleaningPathRepositoryTest {
         cleaningPathRepository.save(path1);
         cleaningPathRepository.save(path2);
 
-        List<CleaningPath> pendingPaths = cleaningPathRepository.findByDone(false);
+        List<CleaningPath> pendingPaths = cleaningPathRepository.findByDoneOrderByScheduledDate(false);
 
         assertFalse(pendingPaths.isEmpty());
         assertFalse(pendingPaths.get(0).isDone());

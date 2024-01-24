@@ -71,7 +71,7 @@ public class CleaningPathServiceImplTest {
             cleaningPaths.add(path1);
             cleaningPaths.add(path2);
 
-            when(cleaningPathRepository.findByDone(any(boolean.class))).thenReturn(cleaningPaths);
+            when(cleaningPathRepository.findByDoneOrderByScheduledDate(any(boolean.class))).thenReturn(cleaningPaths);
 
             List<CleaningPath> result = cleaningPathService.getCleaningPathByStatus(status);
 
@@ -79,7 +79,7 @@ public class CleaningPathServiceImplTest {
             assertEquals(cleaningPaths, result);
 
 
-            verify(cleaningPathRepository, times(1)).findByDone(any(boolean.class));
+            verify(cleaningPathRepository, times(1)).findByDoneOrderByScheduledDate(any(boolean.class));
 
     }
 
