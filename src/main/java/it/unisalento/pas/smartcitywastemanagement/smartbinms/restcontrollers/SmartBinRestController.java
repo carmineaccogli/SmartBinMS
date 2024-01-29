@@ -173,6 +173,13 @@ public class SmartBinRestController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ROLE_WasteManagementCompany')")
+    @RequestMapping(value="/test", method=RequestMethod.GET)
+    public String test(){
+        return "Hello world";
+    }
+
+
 
 
 
